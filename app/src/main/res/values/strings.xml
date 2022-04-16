@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">OpenBCI-WorkingMemory</string>
+    <string name="app_icon">app_icon</string>
+    <string name="title_activity_connection_socket">ConnectionSocket</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_socket_connection">SocketConnection</string>
+    <string name="instruction">Instrucciones</string>
+    <string name="recomenda">Recomendaciones</string>
+    <string name="continuar">Continuar</string>
+    <string name="Conectar">Connect</string>
+    <string name="Wifi">Connect WiFi</string>
+    <string name="Config">Configuracion Usuario</string>
+
+    <string name="PS1">1.- Antes de empezar la toma de datos, verifique que la diadema (Muse Headband) este bien colocada.</string>
+    <string name="PS2">2.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
+    <string name="PS3">3.- La diadema debe estar colocada a la mitad de su frente. No muy abajo ni muy arriba.</string>
+    <string name="PS4">4.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres</string>
+    <string name="PS5">5.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
+
+</resources>
