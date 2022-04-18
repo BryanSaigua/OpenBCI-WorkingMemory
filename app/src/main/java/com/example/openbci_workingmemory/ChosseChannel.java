@@ -43,6 +43,7 @@ public class ChosseChannel extends Activity implements View.OnClickListener {
 //    private LineAndPointFormatter lineFormatterChannelTwo;
 //    private LineAndPointFormatter lineFormatterChannelTre;
 //    private LineAndPointFormatter lineFormatterChannelFour;
+    //hola
 
     private int notchFrequency = 14;
     private static final int PLOT_LENGTH = 255 * 3;
