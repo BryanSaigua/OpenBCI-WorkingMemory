@@ -52,25 +52,24 @@ class Server():
             for c in self.clients:
                 try:
                     data = c['client'].recv(1024) 
-                    if (data.decode("UTF-8") == 'enviar'):
-                        self.activated = True
-
-                    if (data.decode("UTF-8") == 'salir'):
-                        self.activated = False
-
-                    if (self.activated):
-                        msg = str(sample.channels_data) 
-                        #print(msg)
-                        msgCodified = msg.encode("UTF-8")
-                        c['client'].send((len(msgCodified).to_bytes(2, byteorder='big')))
-                        c['client'].send((msgCodified))
+                    msg = str(sample.channels_data) 
+                    msgCodified = msg.encode("UTF-8")
+                    print(msg)
+                    c['client'].send((len(msgCodified).to_bytes(2, byteorder='big')))
+                    c['client'].send((msgCodified))
                 except: 
                     pass
 
     def processarCon(self):
         print("ProcessarCon iniciado")
-
         board = OpenBCICyton(daisy = False)
         board.start_stream(self.print_raw)
+        #if (data.decode("UTF-8") == 'enviar'):
+            #board.start_stream(self.print_raw)
+            #self.activated = True
+        #if (data.decode("UTF-8") == 'salir'):
+        #    self.activated = False
+
+        
 
 Server()
