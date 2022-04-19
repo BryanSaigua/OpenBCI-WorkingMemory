@@ -7,7 +7,7 @@ from pyOpenBCI import OpenBCICyton ##
 from time import sleep
 
 class Server():
-    def __init__(self, host="172.21.104.154", port=5000):
+    def __init__(self, host="192.168.0.102", port=5000):
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((str(host), int(port)))
