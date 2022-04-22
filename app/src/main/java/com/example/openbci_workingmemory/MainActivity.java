@@ -98,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void initUI() {
-
-
         dataSeriesChannelOne = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelTwo = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelTree = new DynamicSeries(PLOT_TITLE);
@@ -469,26 +467,27 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("Se inicializa el socket de llegada");
                                 System.out.println("server: " + message + "\n");
 
-                                getEegChannelValues(newData, message);
+                                newData = getEegChannelValues(message);
+                                if (newData.length == 4) {
+                                    filtState = activeFilter.transform(newData, filtState);
+                                    eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
 
-                                filtState = activeFilter.transform(newData, filtState);
-                                eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
+                                    frameCounter++;
+                                    if (frameCounter % 15 == 0) {
+                                        updatePlot();
+                                    }
 
-                                frameCounter++;
-                                if (frameCounter % 15 == 0) {
-                                    updatePlot();
-                                }
+                                    if (frameCounter % 125 == 0) {
+                                        average_channel_1 = dataSeriesChannelOne.getAverage();
+                                        average_channel_2 = dataSeriesChannelTwo.getAverage();
+                                        average_channel_3 = dataSeriesChannelTree.getAverage();
+                                        average_channel_4 = dataSeriesChannelFour.getAverage();
 
-                                if (frameCounter % 125 == 0) {
-                                    average_channel_1 = dataSeriesChannelOne.getAverage();
-                                    average_channel_2 = dataSeriesChannelTwo.getAverage();
-                                    average_channel_3 = dataSeriesChannelTree.getAverage();
-                                    average_channel_4 = dataSeriesChannelFour.getAverage();
-
-                                    txtAverage_channel_1.setText("Promedio: " + (average_channel_1));
-                                    txtAverage_channel_2.setText("Promedio: " + (average_channel_2));
-                                    txtAverage_channel_3.setText("Promedio: " + (average_channel_3));
-                                    txtAverage_channel_4.setText("Promedio: " + (average_channel_4));
+                                        txtAverage_channel_1.setText("Promedio: " + (average_channel_1));
+                                        txtAverage_channel_2.setText("Promedio: " + (average_channel_2));
+                                        txtAverage_channel_3.setText("Promedio: " + (average_channel_3));
+                                        txtAverage_channel_4.setText("Promedio: " + (average_channel_4));
+                                    }
                                 }
 
                             }
@@ -504,13 +503,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private void getEegChannelValues(double[] newData, String p) {
+        private double[] getEegChannelValues(String p) {
             p = p.substring(1, p.length() - 1);;
             String[] values = p.split(",");
-            newData[0] = Double.parseDouble(values[0]);
-            newData[1] = Double.parseDouble(values[1]);
-            newData[2] = Double.parseDouble(values[2]);
-            newData[3] = Double.parseDouble(values[3]);
+            // Validar que llegue un array de 8 elementos, si el sv envia cualquier error que no se pueda
+            // hacer slit en un array tomara el valor anterior.
+            if (values.length >= 8){
+                newData[0] = Double.parseDouble(values[0]);
+                newData[1] = Double.parseDouble(values[1]);
+                newData[2] = Double.parseDouble(values[2]);
+                newData[3] = Double.parseDouble(values[3]);
+            }
+
+            return newData;
         }
 
         public void updateFilter(int notchFrequency) {
