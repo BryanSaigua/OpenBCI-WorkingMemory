@@ -48,6 +48,9 @@ class Server():
                 pass
 
     def print_raw(self,sample):
+        msg = str(sample.channels_data) 
+        msgCodified = msg.encode("UTF-8")
+        print(msg)
         if len(self.clients) > 0:
             for c in self.clients:
                 try:
