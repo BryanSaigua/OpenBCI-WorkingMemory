@@ -60,7 +60,7 @@ class Server():
 
                     if (self.activated):
                         msg = str(sample.channels_data) 
-                        print(msg)
+                        #print(msg)
                         msgCodified = msg.encode("UTF-8")
                         c['client'].send((len(msgCodified).to_bytes(2, byteorder='big')))
                         c['client'].send((msgCodified))

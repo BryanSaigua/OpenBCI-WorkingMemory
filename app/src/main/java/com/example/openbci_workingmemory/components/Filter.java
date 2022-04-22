@@ -26,8 +26,7 @@ public class Filter {
     // ------------------------------------------------------------------------
     // Constructor
 
-    public Filter(double samplingFrequency, String filterType, int filterOrder, double fc1, double
-            fc2) {
+    public Filter(double samplingFrequency, String filterType, int filterOrder, double fc1, double fc2) {
         // samplingRate = sampling frequency of EEG (220hz or 256hz for Muse)
         // filterType = lowpass, highpass, bandstop, or bandpass
         // filterOrder = filter order corresponding to degree of approximating polynomial. Higher order might increase ripples

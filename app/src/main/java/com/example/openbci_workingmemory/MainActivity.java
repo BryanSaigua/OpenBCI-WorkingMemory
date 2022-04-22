@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textViewIP, textViewPort,textViewStatus;
 
-    String SERVER_IP = "192.168.0.102";
+    String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
     public DataInputStream input;
 
-    public int samplingRate = 256;
+    public int samplingRate = 250;
     public Filter activeFilter;
     public double[][] filtState;
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public CircularBuffer eegBuffer = new CircularBuffer(220, 4);
 
     private static final String PLOT_TITLE = "Raw_EEG";
-
+    // amplitud de la señal ¨consultar¨
     int maxSignalFrequency = 950;
     int minSignalFrequency = 750;
 
@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                System.out.println("Se inisializa el socket de llegada");
+                                System.out.println("Se inicializa el socket de llegada");
                                 System.out.println("server: " + message + "\n");
 
                                 getEegChannelValues(newData, message);
