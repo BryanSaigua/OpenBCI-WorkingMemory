@@ -50,14 +50,12 @@ class Server():
     def print_raw(self,sample):
         msg = str(sample.channels_data) 
         msgCodified = msg.encode("UTF-8")
-        print(msg)
+        #print(msgCodified)
         if len(self.clients) > 0:
             for c in self.clients:
                 try:
-                    data = c['client'].recv(1024) 
-                    msg = str(sample.channels_data) 
-                    msgCodified = msg.encode("UTF-8")
-                    print(msg)
+                    #data = c['client'].recv(1024) 
+                    print(msgCodified)
                     c['client'].send((len(msgCodified).to_bytes(2, byteorder='big')))
                     c['client'].send((msgCodified))
                 except: 
