@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main2"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="2dp"
     tools:context=".MainActivity">
@@ -50,89 +50,81 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="-2dp"
             android:layout_marginEnd="12dp"
-            android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:paddingBottom="10dp">
 
-            <LinearLayout
-                android:id="@+id/ipContainer"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <TextView
+                android:id="@+id/ipTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IP: "
+                android:textColor="@color/text" />
 
-                <TextView
-                    android:id="@+id/ipTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="IP: "
-                    android:textColor="@color/text" />
+            <TextView
+                android:id="@+id/ipValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text" />
 
-                <TextView
-                    android:id="@+id/ipValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/text" />
-            </LinearLayout>
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/portContainer"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <TextView
+                android:id="@+id/portTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Port: "
+                android:textColor="@color/text" />
 
-                <TextView
-                    android:id="@+id/portTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Port: "
-                    android:textColor="@color/text" />
-
-                <TextView
-                    android:id="@+id/portValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/text" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/stateContainer"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/stateTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="State: "
-                    android:textColor="@color/text" />
-
-                <TextView
-                    android:id="@+id/stateValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/text" />
-
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/portValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/portContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoMainContainer"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="-2dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
+
+            <TextView
+            android:id="@+id/stateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="State: "
+            android:textColor="@color/text" />
+
+            <TextView
+                android:id="@+id/stateValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/text" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/scrollContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_below="@+id/infoMainContainer"
-            android:layout_above="@+id/Connect"
-            >
+            android:layout_below="@+id/portContainer"
+            android:layout_above="@+id/Connect">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -185,14 +177,7 @@
 
                                 />
 
-                            <TextView
-                                android:id="@+id/average_channel_1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Promedio: 0"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp" />
+
                         </LinearLayout>
 
 
@@ -217,10 +202,26 @@
 
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/average_channel_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoSizeMaxTextSize="18dp"
+                            android:text="Promedio: 0"
+
+                            android:textColor="@color/primary_black"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
                         android:background="@drawable/rounded_corners_grey_border"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -246,16 +247,6 @@
                                 android:textSize="18sp"
 
                                 />
-
-                            <TextView
-                                android:id="@+id/average_channel_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Promedio: 0"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp" />
-
                         </LinearLayout>
 
 
@@ -282,23 +273,34 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/average_channel_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoSizeMaxTextSize="18dp"
+                            android:text="Promedio: 0"
+                            android:textColor="@color/primary_black"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+
                         android:background="@drawable/rounded_corners_grey_border"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="12dp"
-
-                        >
+                        android:paddingVertical="12dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center"
-                            >
+                            android:gravity="center">
 
                             <TextView
                                 android:id="@+id/textView7"
@@ -308,18 +310,7 @@
                                 android:autoSizeMaxTextSize="18dp"
                                 android:text="Canal: 3"
                                 android:textColor="@color/primary_black"
-                                android:textSize="18sp"
-
-                                />
-
-                            <TextView
-                                android:id="@+id/average_channel_3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Promedio: 0"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"/>
 
                             <!--                    <TextView-->
                             <!--                        android:id="@+id/mean_channel_3"-->
@@ -367,9 +358,24 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/average_channel_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoSizeMaxTextSize="18dp"
+                            android:text="Promedio: 0"
+                            android:textColor="@color/primary_black"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="2dp"
                         android:background="@drawable/rounded_corners_grey_border"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -395,15 +401,6 @@
                                 android:textSize="18sp"
 
                                 />
-
-                            <TextView
-                                android:id="@+id/average_channel_4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Promedio: 0"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp" />
                         </LinearLayout>
 
 
@@ -429,6 +426,22 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/average_channel_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoSizeMaxTextSize="18dp"
+                            android:text="Promedio: 0"
+
+                            android:textColor="@color/primary_black"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </ScrollView>
@@ -447,6 +460,7 @@
             android:gravity="center"
             android:padding="12dp"
             android:text="@string/Conectar" />
+
 
     </RelativeLayout>
 

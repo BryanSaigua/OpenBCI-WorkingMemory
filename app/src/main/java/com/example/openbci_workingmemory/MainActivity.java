@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String PLOT_TITLE = "Raw_EEG";
     // amplitud de la señal ¨consultar¨
-    int maxSignalFrequency = 950;
-    int minSignalFrequency = 750;
+    int maxSignalFrequency = 250000;
+    int minSignalFrequency = -250000;
 
     public DynamicSeries dataSeriesChannelOne;
     public DynamicSeries dataSeriesChannelTwo;
@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
         filterPlotChannelOne.getBorderPaint().setColor(Color.WHITE);
 
         // Set plot background color
-        filterPlotChannelOne.getGraph().getBackgroundPaint().setColor(Color.rgb(104, 176, 171));
+        filterPlotChannelOne.getGraph().getBackgroundPaint().setColor(Color.rgb(133, 146, 158)
+        );
+        //rgb(133, 146, 158)
 
         // Remove gridlines
         filterPlotChannelOne.getGraph().getGridBackgroundPaint().setColor(Color.TRANSPARENT);
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         filterPlotChannelTwo.getBorderPaint().setColor(Color.WHITE);
 
         // Set plot background color
-        filterPlotChannelTwo.getGraph().getBackgroundPaint().setColor(Color.rgb(104, 176, 171));
+        filterPlotChannelTwo.getGraph().getBackgroundPaint().setColor(Color.rgb(175, 122, 197));
 
         // Remove gridlines
         filterPlotChannelTwo.getGraph().getGridBackgroundPaint().setColor(Color.TRANSPARENT);
@@ -308,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         filterPlotChannelTree.getBorderPaint().setColor(Color.WHITE);
 
         // Set plot background color
-        filterPlotChannelTree.getGraph().getBackgroundPaint().setColor(Color.rgb(104, 176, 171));
+        filterPlotChannelTree.getGraph().getBackgroundPaint().setColor(Color.rgb(11, 126, 217));
 
         // Remove gridlines
         filterPlotChannelTree.getGraph().getGridBackgroundPaint().setColor(Color.TRANSPARENT);
@@ -373,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
         filterPlotChannelFour.getBorderPaint().setColor(Color.WHITE);
 
         // Set plot background color
-        filterPlotChannelFour.getGraph().getBackgroundPaint().setColor(Color.rgb(104, 176, 171));
+        filterPlotChannelFour.getGraph().getBackgroundPaint().setColor(Color.rgb(115, 198, 182));
 
         // Remove gridlines
         filterPlotChannelFour.getGraph().getGridBackgroundPaint().setColor(Color.TRANSPARENT);
@@ -468,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("server: " + message + "\n");
 
                                 newData = getEegChannelValues(message);
-                                if (newData.length == 4) {
+                                if (newData.length >= 4) {
                                     filtState = activeFilter.transform(newData, filtState);
                                     eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
 
@@ -502,20 +504,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
+        //private void getEegChannelValues(double[] newData, String p) {
         private double[] getEegChannelValues(String p) {
-            p = p.substring(1, p.length() - 1);;
+            p = p.substring(1, p.length() - 1);
             String[] values = p.split(",");
             // Validar que llegue un array de 8 elementos, si el sv envia cualquier error que no se pueda
             // hacer slit en un array tomara el valor anterior.
-            if (values.length >= 8){
+           if (values.length >= 4){
                 newData[0] = Double.parseDouble(values[0]);
                 newData[1] = Double.parseDouble(values[1]);
                 newData[2] = Double.parseDouble(values[2]);
                 newData[3] = Double.parseDouble(values[3]);
-            }
-
-            return newData;
+          }
+          return newData;
         }
 
         public void updateFilter(int notchFrequency) {
