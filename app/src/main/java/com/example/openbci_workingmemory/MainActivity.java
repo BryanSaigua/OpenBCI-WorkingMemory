@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public Thread2 dataListener;
 
 
-    TextView textViewIP, textViewPort,textViewStatus;
-    Button btnConnect,Disconect;
+    TextView textViewIP, textViewPort, textViewStatus;
+    Button btnConnect, Disconect;
 
     String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private LineAndPointFormatter lineFormatterChannelFour;
 
     public double SCALE_FACTOR_EEG = 0.022351744455307063;
-    public double SCALE_FACTOR_EEG1 = (4500000)/24/(2^23-1);
+    public double SCALE_FACTOR_EEG1 = (4500000) / 24 / (2 ^ 23 - 1);
 
 
     @Override
@@ -130,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         textViewPort = findViewById(R.id.portValue);
         textViewStatus = findViewById(R.id.stateValue);
 
-        textViewIP.setText(SERVER_IP );
-        textViewPort.setText( SERVER_PORT);
+        textViewIP.setText(SERVER_IP);
+        textViewPort.setText(SERVER_PORT);
         textViewStatus.setText("Disconnected");
 
         Button btnConnect1 = findViewById(R.id.backBtn);
@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
         btnConnect = findViewById(R.id.Connect);
@@ -480,7 +479,6 @@ public class MainActivity extends AppCompatActivity {
         private int frameCounter = 0;
 
 
-
         @Override
         public void run() {
 
@@ -500,14 +498,12 @@ public class MainActivity extends AppCompatActivity {
                                 if (newData.length >= 4) {
                                     filtState = activeFilter.transform(newData, filtState);
                                     filtStateNoch = activeFilterNoch.transform(newData, filtStateNoch);
-                                    // matrices
-                                    matriz1 = activeFilter.extractFilteredSamples(filtState);
-                                    matriz2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
-                                    int[][] matrizSuma = new int[.length][0].length];
+                                    // vector
+                                    double[] vector1 = activeFilter.extractFilteredSamples(filtState);
+                                    double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
-                                    eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
-
+                                    eegBuffer.update(sumarVectores(vector1,vector2));
 
                                     frameCounter++;
                                     if (frameCounter % 10 == 0) {
@@ -539,20 +535,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
         //private void getEegChannelValues(double[] newData, String p) {
         private double[] getEegChannelValues(String p) {
             p = p.substring(1, p.length() - 1);
             String[] values = p.split(",");
             // Validar que llegue un array de 8 elementos, si el sv envia cualquier error que no se pueda
             // hacer slit en un array tomara el valor anterior.
-           if (values.length >= 4){
-                newData[0] = Double.parseDouble(values[0])*SCALE_FACTOR_EEG;
-                newData[1] = Double.parseDouble(values[1])*SCALE_FACTOR_EEG;
-                newData[2] = Double.parseDouble(values[2])*SCALE_FACTOR_EEG;
-                newData[3] = Double.parseDouble(values[3])*SCALE_FACTOR_EEG;
-          }
-          return newData;
+            if (values.length >= 4) {
+                newData[0] = Double.parseDouble(values[0]) * SCALE_FACTOR_EEG;
+                newData[1] = Double.parseDouble(values[1]) * SCALE_FACTOR_EEG;
+                newData[2] = Double.parseDouble(values[2]) * SCALE_FACTOR_EEG;
+                newData[3] = Double.parseDouble(values[3]) * SCALE_FACTOR_EEG;
+            }
+            return newData;
         }
+
+
+        private double[] sumarVectores(double[] vector1, double[] vector2) {
+            double[] vectorSuma = new double[vector1.length];
+            for (int i = 0; i < vector1.length; i++) {
+                vectorSuma[i]=vector1[i]+vector2[i];
+            }
+            return vectorSuma;
+        }
+
 
         public void updateFilter(int notchFrequency) {
             if (bandstopFilter != null) {
