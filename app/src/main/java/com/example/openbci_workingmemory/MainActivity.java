@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort,textViewStatus;
     Button btnConnect,Disconect;
 
-    String SERVER_IP = "192.168.2.2";
+    String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
