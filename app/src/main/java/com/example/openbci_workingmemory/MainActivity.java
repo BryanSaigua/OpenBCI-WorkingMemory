@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     TextView textViewIP, textViewPort,textViewStatus;
+    Button btnConnect,Disconect;
 
-    String SERVER_IP = "192.168.100.101";
+    String SERVER_IP = "192.168.2.2";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     private LineAndPointFormatter lineFormatterChannelTwo;
     private LineAndPointFormatter lineFormatterChannelTre;
     private LineAndPointFormatter lineFormatterChannelFour;
+
+    public double SCALE_FACTOR_EEG = 0.022351744455307063;
+    public double SCALE_FACTOR_EEG1 = (4500000)/24/(2^23-1);
 
 
     @Override
@@ -135,7 +139,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnConnect = findViewById(R.id.Connect);
+
+
+        btnConnect = findViewById(R.id.Connect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +151,15 @@ public class MainActivity extends AppCompatActivity {
                 Thread1.start();
             }
         });
+
+//        Disconect = findViewById(R.id.Disconect);
+//        Disconect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                output.write("salir");
+//                output.flush();
+//            }
+//        });
 
     }
 
@@ -428,6 +443,7 @@ public class MainActivity extends AppCompatActivity {
 
     class Thread1 implements Runnable {
         public void run() {
+
             Socket socket;
             try {
                 socket = new Socket(SERVER_IP, Integer.parseInt(SERVER_PORT));
@@ -439,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         textViewStatus.setText("Connected\n");
+
                     }
                 });
                 new Thread(new Thread2()).start();
@@ -453,6 +470,8 @@ public class MainActivity extends AppCompatActivity {
         public double[] newData;
         public Filter bandstopFilter;
         private int frameCounter = 0;
+
+
 
         @Override
         public void run() {
@@ -475,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                                     eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
 
                                     frameCounter++;
-                                    if (frameCounter % 15 == 0) {
+                                    if (frameCounter % 10 == 0) {
                                         updatePlot();
                                     }
 
@@ -511,10 +530,10 @@ public class MainActivity extends AppCompatActivity {
             // Validar que llegue un array de 8 elementos, si el sv envia cualquier error que no se pueda
             // hacer slit en un array tomara el valor anterior.
            if (values.length >= 4){
-                newData[0] = Double.parseDouble(values[0]);
-                newData[1] = Double.parseDouble(values[1]);
-                newData[2] = Double.parseDouble(values[2]);
-                newData[3] = Double.parseDouble(values[3]);
+                newData[0] = Double.parseDouble(values[0])*SCALE_FACTOR_EEG;
+                newData[1] = Double.parseDouble(values[1])*SCALE_FACTOR_EEG;
+                newData[2] = Double.parseDouble(values[2])*SCALE_FACTOR_EEG;
+                newData[3] = Double.parseDouble(values[3])*SCALE_FACTOR_EEG;
           }
           return newData;
         }
