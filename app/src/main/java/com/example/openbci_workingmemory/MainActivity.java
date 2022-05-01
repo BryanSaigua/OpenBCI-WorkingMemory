@@ -24,6 +24,7 @@ import com.androidplot.xy.XYPlot;
 import com.example.openbci_workingmemory.components.CircularBuffer;
 import com.example.openbci_workingmemory.components.DynamicSeries;
 import com.example.openbci_workingmemory.components.Filter;
+import com.example.openbci_workingmemory.components.Filter_Noch;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -47,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     public int samplingRate = 250;
     public Filter activeFilter;
+    public Filter_Noch activeFilterNoch;
     public double[][] filtState;
+    public double[][] filtStateNoch;
 
     private int notchFrequency = 14;
     private static final int PLOT_LENGTH = 255 * 3;
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         setNotchFrequency(notchFrequency);
         setFilterType();
+        setFilterTypeNoch();
         initUI();
 
 
@@ -426,6 +430,10 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.addView(filterPlotChannelFour);
     }
 
+    public void setFilterTypeNoch() {
+        activeFilterNoch = new Filter_Noch(samplingRate, "bandstop", 5, 1, 6);
+        filtStateNoch = new double[4][activeFilterNoch.getNB()];
+    }
 
 
     public void setFilterType() {
@@ -491,7 +499,15 @@ public class MainActivity extends AppCompatActivity {
                                 newData = getEegChannelValues(message);
                                 if (newData.length >= 4) {
                                     filtState = activeFilter.transform(newData, filtState);
+                                    filtStateNoch = activeFilterNoch.transform(newData, filtStateNoch);
+                                    // matrices
+                                    matriz1 = activeFilter.extractFilteredSamples(filtState);
+                                    matriz2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
+
+                                    int[][] matrizSuma = new int[.length][0].length];
+
                                     eegBuffer.update(activeFilter.extractFilteredSamples(filtState));
+
 
                                     frameCounter++;
                                     if (frameCounter % 10 == 0) {
