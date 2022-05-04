@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:drawableStart="@drawable/wifi_connect"
+            android:drawableStart="@drawable/check_black"
             android:gravity="center"
             android:padding="12dp"
             android:text="@string/continuar"
