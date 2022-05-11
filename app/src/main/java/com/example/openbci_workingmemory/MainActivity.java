@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public Filter_Noch activeFilterNoch;
     public double[][] filtState;
     public double[][] filtStateNoch;
+    String message;
 
     private int notchFrequency = 14;
     private static final int PLOT_LENGTH = 255 * 3;
@@ -143,26 +144,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Thread1 = new Thread(new Thread1());
+        Thread1.start();
 
         btnConnect = findViewById(R.id.Connect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
+           @Override
             public void onClick(View v) {
                 /*SERVER_IP = textViewIP.getText().toString().trim();
                 SERVER_PORT = Integer.parseInt(textViewPort.getText().toString().trim());*/
-                Thread1 = new Thread(new Thread1());
-                Thread1.start();
-            }
-        });
+               message = "enviar";
+               if (!message.isEmpty()) {
+                   new Thread(new Thread3(message)).start();
+                       textViewStatus.setText("Connected\n");
+               }
+           }
+           });
 
-//        Disconect = findViewById(R.id.Disconect);
-//        Disconect.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                output.write("salir");
-//                output.flush();
-//            }
-//        });
+        Disconect = findViewById(R.id.Disconect);
+        Disconect.setOnClickListener(new View.OnClickListener() {
+            @Override
+           public void onClick(View view) {
+                message = "salir";
+                if (!message.isEmpty()) {
+                    new Thread(new Thread3(message)).start();
+                    textViewStatus.setText("Disconnected\n");
+               } }
+        });
 
     }
 
@@ -456,15 +464,15 @@ public class MainActivity extends AppCompatActivity {
                 socket = new Socket(SERVER_IP, Integer.parseInt(SERVER_PORT));
                 output = new PrintWriter(socket.getOutputStream());
                 input = new DataInputStream(socket.getInputStream());
-                output.write("enviar");
-                output.flush();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        textViewStatus.setText("Connected\n");
-
-                    }
-                });
+               // output.write("enviar");
+               // output.flush();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        textViewStatus.setText("Connected\n");
+//
+//                    }
+//                });
                 new Thread(new Thread2()).start();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -486,15 +494,15 @@ public class MainActivity extends AppCompatActivity {
 
             while (true) {
                 try {
-                    final String message = input.readUTF();
-                    if (message != null) {
+                    final String[] message = {input.readUTF()};
+                    if (message[0] != null) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 System.out.println("Se inicializa el socket de llegada");
-                                System.out.println("server: " + message + "\n");
+                                System.out.println("server: " + message[0] + "\n");
 
-                                newData = getEegChannelValues(message);
+                                newData = getEegChannelValues(message[0]);
                                 if (newData.length >= 4) {
                                     filtState = activeFilter.transform(newData, filtState);
                                     filtStateNoch = activeFilterNoch.transform(newData, filtStateNoch);
@@ -523,7 +531,6 @@ public class MainActivity extends AppCompatActivity {
                                         txtAverage_channel_4.setText("Promedio: " + (average_channel_4));
                                     }
                                 }
-
                             }
                         });
                     } else {
@@ -536,6 +543,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+
 
         //private void getEegChannelValues(double[] newData, String p) {
         private double[] getEegChannelValues(String p) {
@@ -568,6 +577,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+
+    class Thread3 implements Runnable {
+        private String message;
+        Thread3(String message) {
+            this.message = message;
+        }
+        @Override
+        public void run() {
+            output.write(message);
+            output.flush();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                   // tvMessages.append("server: " + message + "\n");
+                   // etMessage.setText("");
+                }
+            });
+        }
     }
 
     public void updatePlot() {

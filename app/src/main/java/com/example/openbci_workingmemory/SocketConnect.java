@@ -19,7 +19,7 @@ public class SocketConnect extends AppCompatActivity {
         @Override
         public void onClick(View v) {
                        Intent intent = new Intent(v.getContext(), Instruction.class);
-            startActivity(intent);
+                        startActivity(intent);
         }
     });
 }
