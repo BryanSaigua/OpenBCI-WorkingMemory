@@ -580,6 +580,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // hilo 3 send message
     class Thread3 implements Runnable {
         private String message;
         Thread3(String message) {
