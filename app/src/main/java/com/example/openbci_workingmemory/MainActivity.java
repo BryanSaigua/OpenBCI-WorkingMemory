@@ -143,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+// inicializa el socket
         Thread1 = new Thread(new Thread1());
         Thread1.start();
-
+// entra al hilo 3 con enviar
         btnConnect = findViewById(R.id.Connect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                }
            }
            });
-
+// entra al hilo 3 con salir
         Disconect = findViewById(R.id.Disconect);
         Disconect.setOnClickListener(new View.OnClickListener() {
             @Override
