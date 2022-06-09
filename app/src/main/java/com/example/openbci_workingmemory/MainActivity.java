@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus;
     Button btnConnect, Disconect;
 
-    String SERVER_IP = "192.168.100.101";
+    String SERVER_IP = "172.17.244.89";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                        textViewStatus.setText("Connected\n");
                }
            }
-           });
+            });
 // entra al hilo 3 con salir
         Disconect = findViewById(R.id.Disconect);
         Disconect.setOnClickListener(new View.OnClickListener() {

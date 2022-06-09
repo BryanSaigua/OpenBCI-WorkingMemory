@@ -105,11 +105,11 @@
             android:paddingBottom="10dp">
 
             <TextView
-            android:id="@+id/stateTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="State: "
-            android:textColor="@color/text" />
+                android:id="@+id/stateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="State: "
+                android:textColor="@color/text" />
 
             <TextView
                 android:id="@+id/stateValue"
@@ -117,9 +117,11 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/text" />
+
             <Space
                 android:layout_width="12dp"
                 android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/Disconect"
                 android:layout_width="wrap_content"
