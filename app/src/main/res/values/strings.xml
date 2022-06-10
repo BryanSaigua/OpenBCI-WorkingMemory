@@ -25,4 +25,16 @@
     <string name="PS4">4.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres</string>
     <string name="PS5">5.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
 
+    <string-array name="dlangs">
+        <item>Canal 1</item>
+        <item>Canal 2</item>
+        <item>Canal 3</item>
+        <item>Canal 4</item>
+        <item>Canal 5</item>
+        <item>Canal 6</item>
+        <item>Canal 7</item>
+        <item>Canal 8</item>
+    </string-array>
+    <string name="spn_title">Escoja un canal</string>
+
 </resources>

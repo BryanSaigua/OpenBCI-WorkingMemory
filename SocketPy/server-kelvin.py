@@ -7,7 +7,7 @@ import time
 from time import sleep
 
 class Server():
-    def __init__(self, host="192.168.2.2", port=5000):
+    def __init__(self, host="192.168.0.148", port=5000):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((str(host), int(port)))
         self.sock.listen(10)
@@ -56,7 +56,7 @@ class Server():
                             self.activated = True
                         if (self.activated):
                             while True:
-                                msg = "[850,850,850,850]".encode("UTF-8")
+                                msg = "[1800000,120000,100000,80000,60000,14000,12000,10000]".encode("UTF-8")
                                 print('Enviando...',msg)
                                 c['client'].send((len(msg).to_bytes(2, byteorder='big')))
                                 c['client'].send((msg))

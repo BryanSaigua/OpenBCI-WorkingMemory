@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidplot.ui.HorizontalPositioning;
@@ -30,6 +34,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus;
     Button btnConnect, Disconect;
 
-    String SERVER_IP = "172.17.244.89";
+    String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -52,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
     public double[][] filtState;
     public double[][] filtStateNoch;
     String message;
+    public int channelOfInterest = 0;
+
 
     private int notchFrequency = 14;
     private static final int PLOT_LENGTH = 255 * 3;
-    public CircularBuffer eegBuffer = new CircularBuffer(220, 4);
+    public CircularBuffer eegBuffer = new CircularBuffer(220, 8);
 
     private static final String PLOT_TITLE = "Raw_EEG";
     // amplitud de la señal ¨consultar¨
@@ -66,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
     public DynamicSeries dataSeriesChannelTwo;
     public DynamicSeries dataSeriesChannelTree;
     public DynamicSeries dataSeriesChannelFour;
+    public DynamicSeries dataSeriesChannelFive;
+    public DynamicSeries dataSeriesChannelSix;
+    public DynamicSeries dataSeriesChannelSeven;
+    public DynamicSeries dataSeriesChannelEight;
 
     public XYPlot filterPlotChannelOne;
     public XYPlot filterPlotChannelTwo;
@@ -76,11 +87,29 @@ public class MainActivity extends AppCompatActivity {
     int average_channel_2 = 0;
     int average_channel_3 = 0;
     int average_channel_4 = 0;
+    int average_channel_5 = 0;
+    int average_channel_6 = 0;
+    int average_channel_7 = 0;
+    int average_channel_8 = 0;
 
     TextView txtAverage_channel_1;
     TextView txtAverage_channel_2;
     TextView txtAverage_channel_3;
     TextView txtAverage_channel_4;
+    TextView txtAverage_channel_5;
+    TextView txtAverage_channel_6;
+    TextView txtAverage_channel_7;
+    TextView txtAverage_channel_8;
+
+    LinearLayout linearLayout_channel_1;
+    LinearLayout linearLayout_channel_2;
+    LinearLayout linearLayout_channel_3;
+    LinearLayout linearLayout_channel_4;
+    LinearLayout linearLayout_channel_5;
+    LinearLayout linearLayout_channel_6;
+    LinearLayout linearLayout_channel_7;
+    LinearLayout linearLayout_channel_8;
+
 
     private LineAndPointFormatter lineFormatterChannelOne;
     private LineAndPointFormatter lineFormatterChannelTwo;
@@ -90,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public double SCALE_FACTOR_EEG = 0.022351744455307063;
     public double SCALE_FACTOR_EEG1 = (4500000) / 24 / (2 ^ 23 - 1);
 
+    private Spinner Myspinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,30 +132,67 @@ public class MainActivity extends AppCompatActivity {
         setFilterTypeNoch();
         initUI();
 
-
     }
 
 
     public void initUI() {
+
+
+        Myspinner = findViewById(R.id.channel_sppiner);
+
+
+        ArrayList<String> elementos = new ArrayList<>();
+
+        elementos.add("Canal 1");
+        elementos.add("Canal 2");
+        elementos.add("Canal 3");
+        elementos.add("Canal 4");
+        elementos.add("Canal 5");
+        elementos.add("Canal 6");
+        elementos.add("Canal 7");
+        elementos.add("Canal 8");
+
+        ArrayAdapter adp = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, elementos);
+        Myspinner.setAdapter(adp);
+        Myspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+                String elemento = (String) Myspinner.getAdapter().getItem(i);
+                setChanelOfInterest(elemento);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         dataSeriesChannelOne = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelTwo = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelTree = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelFour = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelFive = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelSix = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelSeven = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelEight = new DynamicSeries(PLOT_TITLE);
 
         filterPlotChannelOne = new XYPlot(this, PLOT_TITLE);
+/*
         filterPlotChannelTwo = new XYPlot(this, PLOT_TITLE);
         filterPlotChannelTree = new XYPlot(this, PLOT_TITLE);
         filterPlotChannelFour = new XYPlot(this, PLOT_TITLE);
+*/
 
         initViewChannel1(this);
-        initViewChannel2(this);
+/*        initViewChannel2(this);
         initViewChannel3(this);
-        initViewChannel4(this);
+        initViewChannel4(this);*/
 
         txtAverage_channel_1 = findViewById(R.id.average_channel_1);
-        txtAverage_channel_2 = findViewById(R.id.average_channel_2);
+/*        txtAverage_channel_2 = findViewById(R.id.average_channel_2);
         txtAverage_channel_3 = findViewById(R.id.average_channel_3);
-        txtAverage_channel_4 = findViewById(R.id.average_channel_4);
+        txtAverage_channel_4 = findViewById(R.id.average_channel_4);*/
 
         textViewIP = findViewById(R.id.ipValue);
         textViewPort = findViewById(R.id.portValue);
@@ -242,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.addView(filterPlotChannelOne);
     }
 
+/*
     public void initViewChannel2(Context context) {
 
         FrameLayout frameLayout = findViewById(R.id.frame_layout_xyplot_channel_2);
@@ -436,16 +504,41 @@ public class MainActivity extends AppCompatActivity {
         // Add plot to FilterGraph
         frameLayout.addView(filterPlotChannelFour);
     }
+*/
+
+    public void setChanelOfInterest(String selectedChannel) {
+
+        if (selectedChannel.equals("Canal 1")) {
+            channelOfInterest = 0;
+        } else if (selectedChannel.equals("Canal 2")) {
+            System.out.println("Channel 2....................");
+            channelOfInterest = 1;
+        } else if (selectedChannel.equals("Canal 3")) {
+            channelOfInterest = 2;
+        } else if (selectedChannel.equals("Canal 4")) {
+            channelOfInterest = 3;
+        } else if (selectedChannel.equals("Canal 5")) {
+            channelOfInterest = 4;
+        } else if (selectedChannel.equals("Canal 6")) {
+            channelOfInterest = 5;
+        } else if (selectedChannel.equals("Canal 7")) {
+            channelOfInterest = 6;
+        } else if (selectedChannel.equals("Canal 8")) {
+            channelOfInterest = 7;
+        }
+    }
+
+
 
     public void setFilterTypeNoch() {
         activeFilterNoch = new Filter_Noch(samplingRate, "bandstop", 5, 1, 6);
-        filtStateNoch = new double[4][activeFilterNoch.getNB()];
+        filtStateNoch = new double[8][activeFilterNoch.getNB()];
     }
 
 
     public void setFilterType() {
         activeFilter = new Filter(samplingRate, "bandstop", 5, 1, 6);
-        filtState = new double[4][activeFilter.getNB()];
+        filtState = new double[8][activeFilter.getNB()];
     }
 
 
@@ -490,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
 
-            newData = new double[4];
+            newData = new double[8];
 
             while (true) {
                 try {
@@ -499,8 +592,8 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                System.out.println("Se inicializa el socket de llegada");
-                                System.out.println("server: " + message[0] + "\n");
+                                //System.out.println("Se inicializa el socket de llegada");
+                                //System.out.println("server: " + message[0] + "\n");
 
                                 newData = getEegChannelValues(message[0]);
                                 if (newData.length >= 4) {
@@ -521,14 +614,22 @@ public class MainActivity extends AppCompatActivity {
 
                                     if (frameCounter % 125 == 0) {
                                         average_channel_1 = dataSeriesChannelOne.getAverage();
-                                        average_channel_2 = dataSeriesChannelTwo.getAverage();
+                                      /*  average_channel_2 = dataSeriesChannelTwo.getAverage();
                                         average_channel_3 = dataSeriesChannelTree.getAverage();
                                         average_channel_4 = dataSeriesChannelFour.getAverage();
-
+                                        average_channel_5 = dataSeriesChannelFive.getAverage();
+                                        average_channel_6 = dataSeriesChannelSix.getAverage();
+                                        average_channel_7 = dataSeriesChannelSeven.getAverage();
+                                        average_channel_8 = dataSeriesChannelEight.getAverage();
+*/
                                         txtAverage_channel_1.setText("Promedio: " + (average_channel_1));
-                                        txtAverage_channel_2.setText("Promedio: " + (average_channel_2));
+                                       /* txtAverage_channel_2.setText("Promedio: " + (average_channel_2));
                                         txtAverage_channel_3.setText("Promedio: " + (average_channel_3));
                                         txtAverage_channel_4.setText("Promedio: " + (average_channel_4));
+                                        txtAverage_channel_5.setText("Promedio: " + (average_channel_5));
+                                        txtAverage_channel_6.setText("Promedio: " + (average_channel_6));
+                                        txtAverage_channel_7.setText("Promedio: " + (average_channel_7));
+                                        txtAverage_channel_8.setText("Promedio: " + (average_channel_8));*/
                                     }
                                 }
                             }
@@ -550,13 +651,26 @@ public class MainActivity extends AppCompatActivity {
         private double[] getEegChannelValues(String p) {
             p = p.substring(1, p.length() - 1);
             String[] values = p.split(",");
+            System.out.println("values-------"+ values[0]+"-"+
+                    values[1]+"-"+
+                    values[2]+"-"+
+                    values[3]+"-"+
+                    values[4]+"-"+
+                    values[5]+"-"+
+                    values[6]+"-"+
+                    values[7]);
+            System.out.println("values-------"+ values.length);
             // Validar que llegue un array de 8 elementos, si el sv envia cualquier error que no se pueda
             // hacer slit en un array tomara el valor anterior.
-            if (values.length >= 4) {
+            if (values.length >= 7) {
                 newData[0] = Double.parseDouble(values[0]) * SCALE_FACTOR_EEG;
                 newData[1] = Double.parseDouble(values[1]) * SCALE_FACTOR_EEG;
                 newData[2] = Double.parseDouble(values[2]) * SCALE_FACTOR_EEG;
                 newData[3] = Double.parseDouble(values[3]) * SCALE_FACTOR_EEG;
+                newData[4] = Double.parseDouble(values[4]) * SCALE_FACTOR_EEG;
+                newData[5] = Double.parseDouble(values[5]) * SCALE_FACTOR_EEG;
+                newData[6] = Double.parseDouble(values[6]) * SCALE_FACTOR_EEG;
+                newData[7] = Double.parseDouble(values[7]) * SCALE_FACTOR_EEG;
             }
             return newData;
         }
@@ -605,23 +719,34 @@ public class MainActivity extends AppCompatActivity {
         if (dataSeriesChannelOne.size() >= PLOT_LENGTH ||
                 dataSeriesChannelTwo.size() >= PLOT_LENGTH ||
                 dataSeriesChannelTree.size() >= PLOT_LENGTH ||
-                dataSeriesChannelFour.size() >= PLOT_LENGTH) {
+                dataSeriesChannelFour.size() >= PLOT_LENGTH ||
+                dataSeriesChannelFive.size() >= PLOT_LENGTH ||
+                dataSeriesChannelSix.size() >= PLOT_LENGTH ||
+                dataSeriesChannelSeven.size() >= PLOT_LENGTH ||
+                dataSeriesChannelEight.size() >= PLOT_LENGTH
+        ) {
             dataSeriesChannelOne.remove(numEEGPoints);
-            dataSeriesChannelTwo.remove(numEEGPoints);
+           /* dataSeriesChannelTwo.remove(numEEGPoints);
             dataSeriesChannelTree.remove(numEEGPoints);
             dataSeriesChannelFour.remove(numEEGPoints);
+            dataSeriesChannelFive.remove(numEEGPoints);
+            dataSeriesChannelSix.remove(numEEGPoints);
+            dataSeriesChannelSeven.remove(numEEGPoints);
+            dataSeriesChannelEight.remove(numEEGPoints);*/
         }
 
-        dataSeriesChannelOne.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 0));
+        dataSeriesChannelOne.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, channelOfInterest));
+/*
         dataSeriesChannelTwo.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 1));
         dataSeriesChannelTree.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 2));
         dataSeriesChannelFour.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 3));
+*/
 
         eegBuffer.resetPts();
         filterPlotChannelOne.redraw();
-        filterPlotChannelTwo.redraw();
+        /*filterPlotChannelTwo.redraw();
         filterPlotChannelTree.redraw();
-        filterPlotChannelFour.redraw();
+        filterPlotChannelFour.redraw();*/
 
     }
 }

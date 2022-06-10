@@ -165,6 +165,20 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Spinner
+                            android:id="@+id/channel_sppiner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/dlangs"
+                            android:layout_marginTop="10dip"
+                            android:prompt="@string/spn_title" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/rounded_corners_grey_border"
@@ -172,6 +186,7 @@
                         android:orientation="horizontal"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="12dp"
+                        android:id="@+id/linear_layout_xyplot_channel_1"
 
                         >
 
@@ -248,7 +263,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                <!--    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_corners_grey_border"
@@ -352,25 +367,25 @@
                                 android:textColor="@color/primary_black"
                                 android:textSize="18sp"/>
 
-                            <!--                    <TextView-->
-                            <!--                        android:id="@+id/mean_channel_3"-->
-                            <!--                        android:layout_width="wrap_content"-->
-                            <!--                        android:layout_height="wrap_content"-->
-                            <!--                        android:autoSizeMaxTextSize="18dp"-->
-                            <!--                        android:fontFamily="@font/roboto_thin"-->
-                            <!--                        android:text="Media: 800"-->
-                            <!--                        android:textColor="@color/primary_black"-->
-                            <!--                        android:textSize="18sp" />-->
+                            &lt;!&ndash;                    <TextView&ndash;&gt;
+                            &lt;!&ndash;                        android:id="@+id/mean_channel_3"&ndash;&gt;
+                            &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
+                            &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
+                            &lt;!&ndash;                        android:autoSizeMaxTextSize="18dp"&ndash;&gt;
+                            &lt;!&ndash;                        android:fontFamily="@font/roboto_thin"&ndash;&gt;
+                            &lt;!&ndash;                        android:text="Media: 800"&ndash;&gt;
+                            &lt;!&ndash;                        android:textColor="@color/primary_black"&ndash;&gt;
+                            &lt;!&ndash;                        android:textSize="18sp" />&ndash;&gt;
 
-                            <!--                    <TextView-->
-                            <!--                        android:id="@+id/min_channel_3"-->
-                            <!--                        android:layout_width="wrap_content"-->
-                            <!--                        android:layout_height="wrap_content"-->
-                            <!--                        android:autoSizeMaxTextSize="18dp"-->
-                            <!--                        android:fontFamily="@font/roboto_thin"-->
-                            <!--                        android:text="Mínimo: 700"-->
-                            <!--                        android:textColor="@color/primary_black"-->
-                            <!--                        android:textSize="18sp" />-->
+                            &lt;!&ndash;                    <TextView&ndash;&gt;
+                            &lt;!&ndash;                        android:id="@+id/min_channel_3"&ndash;&gt;
+                            &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
+                            &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
+                            &lt;!&ndash;                        android:autoSizeMaxTextSize="18dp"&ndash;&gt;
+                            &lt;!&ndash;                        android:fontFamily="@font/roboto_thin"&ndash;&gt;
+                            &lt;!&ndash;                        android:text="Mínimo: 700"&ndash;&gt;
+                            &lt;!&ndash;                        android:textColor="@color/primary_black"&ndash;&gt;
+                            &lt;!&ndash;                        android:textSize="18sp" />&ndash;&gt;
 
                         </LinearLayout>
 
@@ -477,8 +492,8 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
-                    <LinearLayout
+-->
+                 <!--   <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -504,7 +519,7 @@
                             android:textColor="@color/primary_black"
                             android:textSize="18sp" />
 
-                    </LinearLayout>
+                    </LinearLayout>-->
 
                 </LinearLayout>
 
