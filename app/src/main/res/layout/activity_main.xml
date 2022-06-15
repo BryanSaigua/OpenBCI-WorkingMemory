@@ -71,7 +71,7 @@
                 android:textColor="@color/text" />
 
             <Space
-                android:layout_width="12dp"
+                android:layout_width="23dp"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -88,21 +88,9 @@
                 android:text=""
                 android:textColor="@color/text" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/portContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/infoMainContainer"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="-2dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp">
+            <Space
+                android:layout_width="23dp"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/stateTitle"
@@ -118,21 +106,25 @@
                 android:text=""
                 android:textColor="@color/text" />
 
-            <Space
-                android:layout_width="12dp"
-                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-            <Button
-                android:id="@+id/Disconect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/stilebutton"
-                android:drawableStart="@drawable/wifi_connect"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/Des" />
+        <LinearLayout
+            android:id="@+id/portContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoMainContainer"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
+
+
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -165,17 +157,44 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_grey_border"
+                        android:layout_marginVertical="10dp"
+                        >
 
                         <Spinner
                             android:id="@+id/channel_sppiner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/dlangs"
-                            android:layout_marginTop="10dip"
+                            android:entries="@array/channels"
                             android:prompt="@string/spn_title" />
 
                     </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="100dp"
+                        >
+
+                        <Button
+                            android:id="@+id/training"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/stilebutton"
+                            android:drawableStart="@drawable/wifi_connect"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:text="Entrenar" />
+
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -187,43 +206,19 @@
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="12dp"
                         android:id="@+id/linear_layout_xyplot_channel_1"
-
                         >
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            >
-
-                            <TextView
-                                android:id="@+id/textView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Canal: 1"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp"
-
-                                />
-
-
-                        </LinearLayout>
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="10dp"
+                            android:layout_margin="5dp"
                             android:orientation="vertical">
 
 
                             <FrameLayout
                                 android:id="@+id/frame_layout_xyplot_channel_1"
                                 android:layout_width="match_parent"
-                                android:layout_height="80dp"
+                                android:layout_height="100dp"
                                 android:background="@drawable/rounded_corners_grey_border"
                                 app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -240,26 +235,68 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/average_channel_1"
+                            android:id="@+id/textView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
                             android:autoSizeMaxTextSize="18dp"
-                            android:text="Promedio: 0"
-
+                            android:text="Canal: 1"
                             android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
 
+                            />
                         <Space
                             android:layout_width="5dp"
                             android:layout_height="wrap_content" />
                         <TextView
-                            android:id="@+id/Uv1"
+                            android:id="@+id/average_channel_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:autoSizeMaxTextSize="18dp"
-                            android:text="uV/count"
+                            android:text="Promedio: 0 uV/count"
                             android:textColor="@color/primary_black"
                             android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/rounded_corners_grey_border"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="12dp"
+                        android:layout_marginVertical="22dp"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/timer_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:autoSizeMaxTextSize="18dp"
+                                android:text="Cronómetro"
+                                android:textColor="@color/primary_black"
+                                android:textSize="20sp" />
+                            <TextView
+                                android:id="@+id/timer_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:autoSizeMaxTextSize="18dp"
+                                android:text="2:30"
+                                android:textColor="@color/primary_black"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -526,6 +563,7 @@
             </ScrollView>
 
         </LinearLayout>
+
 
         <Button
             android:id="@+id/Connect"

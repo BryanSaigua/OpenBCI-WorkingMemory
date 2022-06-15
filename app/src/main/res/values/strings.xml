@@ -16,7 +16,7 @@
     <string name="continuar">Continuar</string>
     <string name="Conectar">Empezar</string>
     <string name="Des">Cancelar</string>
-    <string name="Wifi">Connect WiFi</string>
+    <string name="Wifi">Main Screen</string>
     <string name="Config">Configuracion Usuario</string>
 
     <string name="PS1">1.- Antes de empezar la toma de datos, verifique que la diadema (Muse Headband) este bien colocada.</string>
@@ -25,7 +25,7 @@
     <string name="PS4">4.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres</string>
     <string name="PS5">5.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
 
-    <string-array name="dlangs">
+    <string-array name="channels">
         <item>Canal 1</item>
         <item>Canal 2</item>
         <item>Canal 3</item>
@@ -35,6 +35,6 @@
         <item>Canal 7</item>
         <item>Canal 8</item>
     </string-array>
-    <string name="spn_title">Escoja un canal</string>
+    <string name="spn_title">Chosse a channel</string>
 
 </resources>

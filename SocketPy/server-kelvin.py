@@ -52,12 +52,13 @@ class Server():
                 for c in self.clients:
                     try:
                         data = c['client'].recv(1024)
+                        print('data.decode("UTF-8")...',data.decode("UTF-8"))
                         if (data.decode("UTF-8") == 'enviar'):
                             self.activated = True
+                        
                         if (self.activated):
                             while True:
                                 msg = "[1800000,120000,100000,80000,60000,14000,12000,10000]".encode("UTF-8")
-                                print('Enviando...',msg)
                                 c['client'].send((len(msg).to_bytes(2, byteorder='big')))
                                 c['client'].send((msg))
                                 time.sleep(0.05)
