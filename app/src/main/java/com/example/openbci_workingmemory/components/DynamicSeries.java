@@ -92,10 +92,14 @@ public class DynamicSeries implements XYSeries, PlotListener {
     public int getAverage() {
         int dataSeriesSize = yVals.size();
         int sum = 0;
+        int cont = 0;
         for (int i = dataSeriesSize - 15; i < dataSeriesSize; i++) {
-            sum = sum + yVals.get(i).intValue();
+            if (i > 0) {
+                sum = sum + yVals.get(i).intValue();
+                cont++;
+            }
         }
-        return sum / 15;
+        return sum / cont;
     }
 
     public float[] getPSample() {

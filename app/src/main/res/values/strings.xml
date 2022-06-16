@@ -14,9 +14,9 @@
     <string name="instruction">Instrucciones</string>
     <string name="recomenda">Recomendaciones</string>
     <string name="continuar">Continuar</string>
-    <string name="Conectar">Empezar</string>
+    <string name="Conectar">Iniciar evaluación</string>
     <string name="Des">Cancelar</string>
-    <string name="Wifi">Main Screen</string>
+    <string name="Wifi">Análisis de señales</string>
     <string name="Config">Configuracion Usuario</string>
 
     <string name="PS1">1.- Antes de empezar la toma de datos, verifique que la diadema (Muse Headband) este bien colocada.</string>

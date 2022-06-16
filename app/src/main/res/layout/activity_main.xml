@@ -51,10 +51,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="-2dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/ipTitle"
@@ -78,7 +77,7 @@
                 android:id="@+id/portTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Port: "
+                android:text="Puerto: "
                 android:textColor="@color/text" />
 
             <TextView
@@ -88,15 +87,26 @@
                 android:text=""
                 android:textColor="@color/text" />
 
-            <Space
-                android:layout_width="23dp"
-                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/stateContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoMainContainer"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/stateTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="State: "
+                android:text="Estado: "
                 android:textColor="@color/text" />
 
             <TextView
@@ -109,31 +119,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/portContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/infoMainContainer"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp">
-
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/scrollContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/portContainer"
-            android:layout_above="@+id/Connect">
+            android:layout_above="@+id/ConnectLayout"
+            android:layout_below="@+id/stateContainer"
+            android:orientation="vertical">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -158,9 +149,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corners_grey_border"
                         android:layout_marginVertical="10dp"
-                        >
+                        android:background="@drawable/rounded_corners_grey_border">
 
                         <Spinner
                             android:id="@+id/channel_sppiner"
@@ -175,28 +165,37 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-                        android:layout_gravity="center"
-                        android:paddingVertical="10dp"
-                        android:paddingHorizontal="100dp"
-                        >
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:paddingVertical="10dp">
 
                         <Button
-                            android:id="@+id/training"
-                            android:layout_width="match_parent"
+                            android:id="@+id/btn_training"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_marginBottom="5dp"
                             android:background="@drawable/stilebutton"
-                            android:drawableStart="@drawable/wifi_connect"
+                            android:gravity="center"
+
+                            android:paddingHorizontal="43dp"
+                            android:text="Entrenar" />
+                        <Button
+                            android:id="@+id/btn_outTraining"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/stilebutton"
                             android:gravity="center"
                             android:padding="12dp"
-                            android:text="Entrenar" />
+                            android:text="Salir del entrenamiento" />
 
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_xyplot_channel_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -204,9 +203,7 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="12dp"
-                        android:id="@+id/linear_layout_xyplot_channel_1"
-                        >
+                        android:paddingVertical="12dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -232,7 +229,8 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
 
                         <TextView
                             android:id="@+id/textView3"
@@ -245,9 +243,11 @@
                             android:textSize="18sp"
 
                             />
+
                         <Space
                             android:layout_width="5dp"
                             android:layout_height="wrap_content" />
+
                         <TextView
                             android:id="@+id/average_channel_1"
                             android:layout_width="wrap_content"
@@ -262,13 +262,13 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="22dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/rounded_corners_grey_border"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="12dp"
-                        android:layout_marginVertical="22dp"
 
                         >
 
@@ -276,8 +276,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/timer_title"
@@ -287,6 +287,7 @@
                                 android:text="Cronómetro"
                                 android:textColor="@color/primary_black"
                                 android:textSize="20sp" />
+
                             <TextView
                                 android:id="@+id/timer_value"
                                 android:layout_width="wrap_content"
@@ -300,88 +301,10 @@
 
                     </LinearLayout>
 
-                <!--    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corners_grey_border"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="12dp"
-
-                        >
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Canal: 2"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp"
-
-                                />
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-
-                            <FrameLayout
-                                android:id="@+id/frame_layout_xyplot_channel_2"
-                                android:layout_width="match_parent"
-                                android:layout_height="80dp"
-                                android:background="@drawable/rounded_corners_grey_border"
-
-                                app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/texts_state_container" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
                     <LinearLayout
+                        android:id="@+id/prediction_container"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/average_channel_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="Promedio: 0"
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-                        <Space
-                            android:layout_width="5dp"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/Uv2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="uV/count"
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:background="@drawable/rounded_corners_grey_border"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -390,173 +313,33 @@
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/textView7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:autoSizeMaxTextSize="18dp"
-                                android:text="Canal: 3"
-                                android:textColor="@color/primary_black"
-                                android:textSize="18sp"/>
-
-                            &lt;!&ndash;                    <TextView&ndash;&gt;
-                            &lt;!&ndash;                        android:id="@+id/mean_channel_3"&ndash;&gt;
-                            &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
-                            &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
-                            &lt;!&ndash;                        android:autoSizeMaxTextSize="18dp"&ndash;&gt;
-                            &lt;!&ndash;                        android:fontFamily="@font/roboto_thin"&ndash;&gt;
-                            &lt;!&ndash;                        android:text="Media: 800"&ndash;&gt;
-                            &lt;!&ndash;                        android:textColor="@color/primary_black"&ndash;&gt;
-                            &lt;!&ndash;                        android:textSize="18sp" />&ndash;&gt;
-
-                            &lt;!&ndash;                    <TextView&ndash;&gt;
-                            &lt;!&ndash;                        android:id="@+id/min_channel_3"&ndash;&gt;
-                            &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
-                            &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
-                            &lt;!&ndash;                        android:autoSizeMaxTextSize="18dp"&ndash;&gt;
-                            &lt;!&ndash;                        android:fontFamily="@font/roboto_thin"&ndash;&gt;
-                            &lt;!&ndash;                        android:text="Mínimo: 700"&ndash;&gt;
-                            &lt;!&ndash;                        android:textColor="@color/primary_black"&ndash;&gt;
-                            &lt;!&ndash;                        android:textSize="18sp" />&ndash;&gt;
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-
-                            <FrameLayout
-                                android:id="@+id/frame_layout_xyplot_channel_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="80dp"
-                                android:background="@drawable/rounded_corners_grey_border"
-
-                                app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/texts_state_container" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/average_channel_3"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="Promedio: 0"
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-
-                        <Space
-                            android:layout_width="5dp"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/Uv3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="uV/count"
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:background="@drawable/rounded_corners_grey_border"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="12dp"
-
-                        >
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="25dp"
+                            android:layout_marginVertical="5dp"
                             android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textView8"
+                                android:id="@+id/prediction_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
                                 android:autoSizeMaxTextSize="18dp"
-                                android:text="Canal: 4"
+                                android:text="Predicción"
                                 android:textColor="@color/primary_black"
-                                android:textSize="18sp"
+                                android:textSize="20sp" />
 
-                                />
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="10dp"
-                            android:orientation="vertical">
-
-
-                            <FrameLayout
-                                android:id="@+id/frame_layout_xyplot_channel_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="80dp"
-                                android:background="@drawable/rounded_corners_grey_border"
-
-                                app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/texts_state_container" />
+                            <TextView
+                                android:id="@+id/prediction_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:autoSizeMaxTextSize="18dp"
+                                android:text="......."
+                                android:textColor="@color/primary_black"
+                                android:textSize="20sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
--->
-                 <!--   <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/average_channel_4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="Promedio: 0"
-
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-
-                        <Space
-                            android:layout_width="5dp"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/Uv4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
-                            android:text="uV/count"
-                            android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>-->
 
                 </LinearLayout>
 
@@ -564,19 +347,38 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ConnectLayout"
 
-        <Button
-            android:id="@+id/Connect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/stilebutton"
-            android:drawableStart="@drawable/wifi_connect"
             android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/Conectar" />
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
 
+            >
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/stilebutton"
+                android:gravity="center"
+                android:paddingHorizontal="43dp"
+                android:text="Iniciar" />
+            <Button
+                android:id="@+id/btn_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/stilebutton"
+                android:paddingHorizontal="43dp"
+                android:gravity="center"
+                android:text="Detener" />
+        </LinearLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

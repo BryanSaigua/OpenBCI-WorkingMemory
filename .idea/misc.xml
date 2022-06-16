@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/PC/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.13489583333333333" />
+        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/drawable-v24/disable_button.xml" value="0.183" />
         <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/drawable-v24/rounded_corners_grey_border.xml" value="0.2085" />
+        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/drawable/stilebutton.xml" value="0.183" />
         <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_config_user.xml" value="0.16438703140830802" />
-        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_instruction.xml" value="0.16438703140830802" />
-        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_socket_connect.xml" value="0.16438703140830802" />
+        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_instruction.xml" value="0.25" />
+        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_main.xml" value="0.29087327642810246" />
+        <entry key="..\:/Users/PC/Documents/Kelvin/Tutorias/OpenBCI-WorkingMemory/app/src/main/res/layout/activity_socket_connect.xml" value="0.22" />
         <entry key="..\:/Users/bryan/AndroidStudioProjects/OpenBCIWorkingMemory/app/src/main/res/drawable-v24/button_white.xml" value="0.1515" />
         <entry key="..\:/Users/bryan/AndroidStudioProjects/OpenBCIWorkingMemory/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.137" />
         <entry key="..\:/Users/bryan/AndroidStudioProjects/OpenBCIWorkingMemory/app/src/main/res/drawable-v24/lead_colored.xml" value="0.1765" />

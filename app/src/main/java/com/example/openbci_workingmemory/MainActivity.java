@@ -41,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
     public Thread dataListener = null;
 
     TextView textViewIP, textViewPort, textViewStatus;
-    Button btnConnect, Disconect;
+    Button btnStart;
+    Button btnStop;
+    Button btnTraining;
+    Button btnOutTraining;
+
 
     String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public double[][] filtStateNoch;
     public int channelOfInterest = 0;
 
+    LinearLayout predictionContainer;
 
     private int notchFrequency = 14;
     private static final int PLOT_LENGTH = 255 * 3;
@@ -76,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
     public double SCALE_FACTOR_EEG1 = (4500000) / 24 / (2 ^ 23 - 1);
 
     private Spinner channelsSpinner;
-    private String appState = "JUSTSTARTED";
+    private String appState = "WAITINGEVALUATION";
+    private Boolean justStarted = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +113,12 @@ public class MainActivity extends AppCompatActivity {
         textViewPort.setText(SERVER_PORT);
         textViewStatus.setText("Disconnected");
 
-        Button btnConnect1 = findViewById(R.id.backBtn);
-        btnConnect1.setOnClickListener(new View.OnClickListener() {
+
+        predictionContainer = (LinearLayout) findViewById(R.id.prediction_container);
+
+
+        Button btnStart1 = findViewById(R.id.backBtn);
+        btnStart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Instruction.class);
@@ -116,16 +126,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnConnect = findViewById(R.id.Connect);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+        btnStart = findViewById(R.id.btn_start);
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                if (appState.equals("WAITINGTRAINING"))
+                    changeAppState("TRAINING");
+                else if (appState.equals("WAITINGEVALUATION"))
+                    changeAppState("EVALUATING");
             }
         });
 
-     }
+        btnStop = findViewById(R.id.btn_stop);
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (appState.equals("EVALUATING"))
+                    changeAppState("WAITINGEVALUATION");
+                if (appState.equals("TRAINING"))
+                    changeAppState("WAITINGTRAINING");
+            }
+        });
+
+        btnTraining = findViewById(R.id.btn_training);
+        btnTraining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeAppState("WAITINGTRAINING");
+            }
+        });
+
+        btnOutTraining = findViewById(R.id.btn_outTraining);
+        btnOutTraining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeAppState("WAITINGEVALUATION");
+            }
+        });
+
+        changeAppState("WAITINGEVALUATION");
+
+
+    }
 
     public void startListenerThread() {
         socketThread = new Thread(new SocketThread());
@@ -229,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setChanelOfInterest(String selectedChannel) {
-
+        clearPlot();
         if (selectedChannel.equals("Canal 1")) {
             channelOfInterest = 0;
         } else if (selectedChannel.equals("Canal 2")) {
@@ -262,22 +304,133 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeAppState(String state) {
 
-        if (appState.equals("JUSTSTARTED") && state.equals("EVALUATING")) {
+
+
+/*
+        btnStart.setOnClickListener(new View.OnClickListener() {
+                if (appState.equals("WAITINGTRAINING"))
+                    changeAppState("TRAINING");
+                if (appState.equals("WAITINGEVALUATION"))
+                    changeAppState("EVALUATING");
+
+        btnStop = findViewById(R.id.btn_stop);
+                if (appState.equals("EVALUATING"))
+                    changeAppState("WAITINGEVALUATION");
+                if (appState.equals("TRAINING"))
+                    changeAppState("WAITINGTRAINING");
+
+        btnTraining = findViewById(R.id.btn_training);
+                changeAppState("WAITINGTRAINING");
+
+        btnOutTraining = findViewById(R.id.btn_outTraining);
+                changeAppState("WAITINGEVALUATION");
+
+*/
+
+        if (justStarted && (state.equals("TRAINING") || state.equals("EVALUATING"))) {
+            System.out.println("Inicia el muestreo de datos");
             Thread sendMessageThread = new Thread(new SendMessageThread("enviar"));
             sendMessageThread.start();
-            appState = "EVALUATING";
-            textViewStatus.setText("Evaluating");
-
-        } else if (state.equals("WAITINGTRAINING")) {
-
-            appState = "WAITINGTRAINING";
-            textViewStatus.setText("Waiting for training");
-
-        } else if (state.equals("TRAINING")) {
-            appState = "TRAINING";
-        } else if (state.equals("WAITINGEVALUATION")) {
-            appState = "WAITINGEVALUATION";
+            justStarted = false;
         }
+
+        appState = state;
+
+        switch (state) {
+            case "TRAINING":
+                clearPlot();
+                btnTraining.setVisibility(LinearLayout.GONE);
+                btnTraining.setEnabled(false);
+                btnTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnOutTraining.setVisibility(LinearLayout.VISIBLE);
+                btnOutTraining.setEnabled(false);
+                btnOutTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnStart.setVisibility(LinearLayout.GONE);
+                btnStart.setEnabled(false);
+                btnStart.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnStop.setVisibility(LinearLayout.VISIBLE);
+                btnStop.setEnabled(true);
+                btnStop.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                textViewStatus.setText("Entrenando");
+                predictionContainer.setVisibility(View.GONE);
+
+                break;
+            case "EVALUATING":
+                clearPlot();
+                btnTraining.setVisibility(LinearLayout.VISIBLE);
+                btnTraining.setEnabled(false);
+                btnTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnOutTraining.setVisibility(LinearLayout.GONE);
+                btnOutTraining.setEnabled(false);
+                btnOutTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnStart.setVisibility(LinearLayout.GONE);
+                btnStart.setEnabled(true);
+                btnStart.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnStop.setVisibility(LinearLayout.VISIBLE);
+                btnStop.setEnabled(true);
+                btnStop.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                textViewStatus.setText("Evaluando");
+                predictionContainer.setVisibility(View.VISIBLE);
+
+                break;
+            case "WAITINGEVALUATION":
+
+                btnTraining.setVisibility(LinearLayout.VISIBLE);
+                btnTraining.setEnabled(true);
+                btnTraining.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                btnOutTraining.setVisibility(LinearLayout.GONE);
+                btnOutTraining.setEnabled(false);
+                btnOutTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnStart.setVisibility(LinearLayout.VISIBLE);
+                btnStart.setEnabled(true);
+                btnStart.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                btnStop.setVisibility(LinearLayout.GONE);
+                btnStop.setEnabled(false);
+                btnStop.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                textViewStatus.setText("Esperando evaluación");
+                predictionContainer.setVisibility(View.VISIBLE);
+
+
+                break;
+
+            case "WAITINGTRAINING":
+
+                btnTraining.setVisibility(LinearLayout.GONE);
+                btnTraining.setEnabled(false);
+                btnTraining.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                btnOutTraining.setVisibility(LinearLayout.VISIBLE);
+                btnOutTraining.setEnabled(true);
+                btnOutTraining.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                btnStart.setVisibility(LinearLayout.VISIBLE);
+                btnStart.setEnabled(true);
+                btnStart.setBackground(getResources().getDrawable(R.drawable.stilebutton));
+
+                btnStop.setVisibility(LinearLayout.GONE);
+                btnStop.setEnabled(false);
+                btnStop.setBackground(getResources().getDrawable(R.drawable.disable_button));
+
+                textViewStatus.setText("Esperando entrenamiento");
+                predictionContainer.setVisibility(View.GONE);
+
+                break;
+        }
+
+
+
     }
 
     class SocketThread implements Runnable {
@@ -404,12 +557,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearPlot() {
-        int numEEGPoints = eegBuffer.getPts();
-        if (dataSeriesChannelOne.size() >= PLOT_LENGTH) {
-            dataSeriesChannelOne.remove(numEEGPoints);
-        }
-        dataSeriesChannelOne.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, channelOfInterest));
-        eegBuffer.resetPts();
+        int dataSeriesSize = dataSeriesChannelOne.getAll().size();
+        dataSeriesChannelOne.remove(dataSeriesSize);
         filterPlotChannelOne.redraw();
     }
 }
