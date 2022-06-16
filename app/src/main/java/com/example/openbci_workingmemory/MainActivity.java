@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
     public Thread dataListener = null;
     public int counter = 150;
 
-    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value;
+    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value,canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.0.148";
+    String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         textViewPort = findViewById(R.id.portValue);
         textViewStatus = findViewById(R.id.stateValue);
         txtTimer_value = findViewById(R.id.timer_value);
-
+        canal = findViewById(R.id.textView3);
         textViewIP.setText(SERVER_IP);
         textViewPort.setText(SERVER_PORT);
         textViewStatus.setText("Disconnected");
@@ -279,20 +279,28 @@ public class MainActivity extends AppCompatActivity {
         clearPlot();
         if (selectedChannel.equals("Canal 1")) {
             channelOfInterest = 0;
+            canal.setText("Canal: 1");
         } else if (selectedChannel.equals("Canal 2")) {
             channelOfInterest = 1;
+            canal.setText("Canal: 2");
         } else if (selectedChannel.equals("Canal 3")) {
             channelOfInterest = 2;
+            canal.setText("Canal: 3");
         } else if (selectedChannel.equals("Canal 4")) {
             channelOfInterest = 3;
+            canal.setText("Canal: 4");
         } else if (selectedChannel.equals("Canal 5")) {
             channelOfInterest = 4;
+            canal.setText("Canal: 5");
         } else if (selectedChannel.equals("Canal 6")) {
             channelOfInterest = 5;
+            canal.setText("Canal: 6");
         } else if (selectedChannel.equals("Canal 7")) {
             channelOfInterest = 6;
+            canal.setText("Canal: 7");
         } else if (selectedChannel.equals("Canal 8")) {
             channelOfInterest = 7;
+            canal.setText("Canal: 8");
         }
     }
 
@@ -428,12 +436,15 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 minutos = counter / 60;
                 segundos = counter % 60;
+
                 if (segundos < 10)
                     segundosString = "0" + segundos;
+
                 else
                     segundosString = "" + segundos;
                 txtTimer_value.setText(minutos + ":" + segundosString);
                 counter--;
+                System.out.println(counter);
             }
 
             public void onFinish() {
@@ -450,7 +461,9 @@ public class MainActivity extends AppCompatActivity {
         counter = 150;
         evaluationTimer.cancel();
         txtTimer_value.setText("2:30");
+
     }
+
 
 
     class SocketThread implements Runnable {
@@ -522,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (frameCounter % 125 == 0) {
                                     average_channel_1 = dataSeriesChannelOne.getAverage();
-                                    txtAverage_channel_1.setText("Promedio: " + (average_channel_1));
+                                    txtAverage_channel_1.setText("Promedio: " + (average_channel_1) + " uV/count");
                                 }
                             }
                         }

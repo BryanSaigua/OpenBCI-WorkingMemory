@@ -151,8 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
                         android:background="@drawable/rounded_corners_grey_border">
-
-                        <Spinner
+                            <Spinner
                             android:id="@+id/channel_sppiner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -241,7 +240,7 @@
                             android:autoSizeMaxTextSize="18dp"
                             android:text="Canal: 1"
                             android:textColor="@color/primary_black"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
 
                             />
 
@@ -253,10 +252,10 @@
                             android:id="@+id/average_channel_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:autoSizeMaxTextSize="18dp"
+                            android:autoSizeMaxTextSize="10dp"
                             android:text="Promedio: 0 uV/count"
                             android:textColor="@color/primary_black"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
