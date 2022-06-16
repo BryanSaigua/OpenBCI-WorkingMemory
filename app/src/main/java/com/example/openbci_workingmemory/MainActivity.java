@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,13 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     public Thread socketThread = null;
     public Thread dataListener = null;
+    public int counter = 150;
 
-    TextView textViewIP, textViewPort, textViewStatus;
-    Button btnStart;
-    Button btnStop;
-    Button btnTraining;
-    Button btnOutTraining;
-
+    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value;
+    Button btnStart, btnStop, btnTraining, btnOutTraining;
 
     String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
@@ -74,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     public DynamicSeries dataSeriesChannelOne;
     public XYPlot filterPlotChannelOne;
     int average_channel_1 = 0;
-    TextView txtAverage_channel_1;
+
+
     private LineAndPointFormatter lineFormatterChannelOne;
 
     public double SCALE_FACTOR_EEG = 0.022351744455307063;
@@ -83,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner channelsSpinner;
     private String appState = "WAITINGEVALUATION";
     private Boolean justStarted = true;
+
+    private CountDownTimer evaluationTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         textViewIP = findViewById(R.id.ipValue);
         textViewPort = findViewById(R.id.portValue);
         textViewStatus = findViewById(R.id.stateValue);
+        txtTimer_value = findViewById(R.id.timer_value);
 
         textViewIP.setText(SERVER_IP);
         textViewPort.setText(SERVER_PORT);
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                restartTimer();
                 if (appState.equals("EVALUATING"))
                     changeAppState("WAITINGEVALUATION");
                 if (appState.equals("TRAINING"))
@@ -187,7 +190,9 @@ public class MainActivity extends AppCompatActivity {
         elementos.add("Canal 7");
         elementos.add("Canal 8");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, elementos);
+
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.channels, R.layout.spinner_item);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         channelsSpinner.setAdapter(arrayAdapter);
         channelsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -305,28 +310,6 @@ public class MainActivity extends AppCompatActivity {
     public void changeAppState(String state) {
 
 
-
-/*
-        btnStart.setOnClickListener(new View.OnClickListener() {
-                if (appState.equals("WAITINGTRAINING"))
-                    changeAppState("TRAINING");
-                if (appState.equals("WAITINGEVALUATION"))
-                    changeAppState("EVALUATING");
-
-        btnStop = findViewById(R.id.btn_stop);
-                if (appState.equals("EVALUATING"))
-                    changeAppState("WAITINGEVALUATION");
-                if (appState.equals("TRAINING"))
-                    changeAppState("WAITINGTRAINING");
-
-        btnTraining = findViewById(R.id.btn_training);
-                changeAppState("WAITINGTRAINING");
-
-        btnOutTraining = findViewById(R.id.btn_outTraining);
-                changeAppState("WAITINGEVALUATION");
-
-*/
-
         if (justStarted && (state.equals("TRAINING") || state.equals("EVALUATING"))) {
             System.out.println("Inicia el muestreo de datos");
             Thread sendMessageThread = new Thread(new SendMessageThread("enviar"));
@@ -338,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (state) {
             case "TRAINING":
+                startTimer();
                 clearPlot();
                 btnTraining.setVisibility(LinearLayout.GONE);
                 btnTraining.setEnabled(false);
@@ -360,6 +344,9 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case "EVALUATING":
+
+                startTimer();
+
                 clearPlot();
                 btnTraining.setVisibility(LinearLayout.VISIBLE);
                 btnTraining.setEnabled(false);
@@ -430,8 +417,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void startTimer() {
+        evaluationTimer = new CountDownTimer(150000, 1000) {
+            int minutos;
+            int segundos;
+            String segundosString;
+
+            public void onTick(long millisUntilFinished) {
+                minutos = counter / 60;
+                segundos = counter % 60;
+                if (segundos < 10)
+                    segundosString = "0" + segundos;
+                else
+                    segundosString = "" + segundos;
+                txtTimer_value.setText(minutos + ":" + segundosString);
+                counter--;
+            }
+
+            public void onFinish() {
+                if (appState.equals("EVALUATING"))
+                    changeAppState("WAITINGEVALUATION");
+                if (appState.equals("TRAINING"))
+                    changeAppState("WAITINGTRAINING");
+            }
+        }.start();
 
     }
+
+    public void restartTimer() {
+        counter = 150;
+        evaluationTimer.cancel();
+        txtTimer_value.setText("2:30");
+    }
+
 
     class SocketThread implements Runnable {
         public void run() {
