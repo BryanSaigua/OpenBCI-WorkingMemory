@@ -27,6 +27,7 @@ import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
 import com.example.openbci_workingmemory.components.CircularBuffer;
 import com.example.openbci_workingmemory.components.DynamicSeries;
+import com.example.openbci_workingmemory.components.EEGFileWriter;
 import com.example.openbci_workingmemory.components.Filter;
 import com.example.openbci_workingmemory.components.Filter_Noch;
 
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
 
     private CountDownTimer evaluationTimer;
 
+    EEGFileWriter eegFile = new EEGFileWriter(this, "Captura de datos");
+
+    private String[] extractedArrayString = new String[45000];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         setFilterTypeNoch();
         startListenerThread();
         initUI();
+
+        eegFile.initFile();
     }
 
     public void initUI() {
@@ -448,6 +456,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
+                saveRecord();
+                restartTimer();
                 if (appState.equals("EVALUATING"))
                     changeAppState("WAITINGEVALUATION");
                 if (appState.equals("TRAINING"))
@@ -464,6 +474,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void saveRecord() {
+
+        int totalPoints = extractedArrayString.length;
+
+        for (int i = 0; i < totalPoints; i++) {
+            eegFile.addLineToFile(extractedArrayString[i]);
+        }
+        eegFile.writeFileDataSet();
+    }
 
 
     class SocketThread implements Runnable {
@@ -528,6 +547,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
+                                extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                System.out.println(frameCounter);
                                 frameCounter++;
                                 if (frameCounter % 10 == 0) {
                                     updatePlot();
@@ -537,6 +558,8 @@ public class MainActivity extends AppCompatActivity {
                                     average_channel_1 = dataSeriesChannelOne.getAverage();
                                     txtAverage_channel_1.setText("Promedio: " + (average_channel_1) + " uV/count");
                                 }
+                            } else {
+                                frameCounter = 0;
                             }
                         }
                     });
