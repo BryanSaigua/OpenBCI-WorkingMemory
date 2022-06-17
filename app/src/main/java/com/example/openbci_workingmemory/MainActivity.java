@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -44,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
     public Thread dataListener = null;
     public int counter = 150;
 
-    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value,canal;
+    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.100.101";
+    String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String[] extractedArrayString = new String[45000];
 
+    MediaPlayer ejecucion_motoraMediaPlayer, imagen_motoraMediaPlayer, beepMediaPlayer, beep_finalMediaPlayer, sustraccionMediaPlayer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
         predictionContainer = (LinearLayout) findViewById(R.id.prediction_container);
 
+        ejecucion_motoraMediaPlayer = MediaPlayer.create(this, R.raw.ejecucion_motora);
+        imagen_motoraMediaPlayer = MediaPlayer.create(this, R.raw.imagen_motora);
+        beepMediaPlayer = MediaPlayer.create(this, R.raw.beep);
+        beep_finalMediaPlayer = MediaPlayer.create(this, R.raw.beep_final);
+        sustraccionMediaPlayer = MediaPlayer.create(this, R.raw.sustraccion);
 
         Button btnStart1 = findViewById(R.id.backBtn);
         btnStart1.setOnClickListener(new View.OnClickListener() {
@@ -445,15 +454,39 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 minutos = counter / 60;
                 segundos = counter % 60;
-
                 if (segundos < 10)
                     segundosString = "0" + segundos;
-
                 else
                     segundosString = "" + segundos;
+
+
                 txtTimer_value.setText(minutos + ":" + segundosString);
                 counter--;
-                System.out.println(counter);
+                /*
+                150-60=90
+                90-9=81
+                81-2=79
+                79-9=70
+                70-2=68
+                68-8=60
+
+                */
+
+                if (counter == 90) {
+                    System.out.println("asdasdasd");
+                    ejecucion_motoraMediaPlayer.start();
+                } else if (counter == 81) {
+                    beepMediaPlayer.start();
+                } else if (counter == 79) {
+                    imagen_motoraMediaPlayer.start();
+                } else if (counter == 70) {
+                    beepMediaPlayer.start();
+                } else if (counter == 68) {
+                    sustraccionMediaPlayer.start();
+                } else if (counter == 60) {
+                    beep_finalMediaPlayer.start();
+                }
+
             }
 
             public void onFinish() {
@@ -546,7 +579,6 @@ public class MainActivity extends AppCompatActivity {
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
                                 extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
-                                System.out.println(frameCounter);
                                 frameCounter++;
                                 if (frameCounter % 10 == 0) {
                                     updatePlot();
