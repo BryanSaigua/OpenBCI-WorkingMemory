@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer evaluationTimer;
 
     EEGFileWriter eegFile = new EEGFileWriter(this, "Captura de datos");
+    private int frameCounter = 0;
 
     private String[] extractedArrayString = new String[45000];
 
@@ -476,9 +477,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveRecord() {
 
-        int totalPoints = extractedArrayString.length;
-
-        for (int i = 0; i < totalPoints; i++) {
+        for (int i = 0; i < frameCounter; i++) {
             eegFile.addLineToFile(extractedArrayString[i]);
         }
         eegFile.writeFileDataSet();
@@ -525,7 +524,6 @@ public class MainActivity extends AppCompatActivity {
 
         public double[] newData;
         public Filter bandstopFilter;
-        private int frameCounter = 0;
 
 
         @Override
