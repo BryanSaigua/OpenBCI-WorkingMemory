@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.0.148";
+    String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -471,19 +471,18 @@ public class MainActivity extends AppCompatActivity {
                 68-8=60
 
                 */
-
-                if (counter == 90) {
-                    System.out.println("asdasdasd");
+                System.out.println(counter);
+                if (counter == 89) {
                     ejecucion_motoraMediaPlayer.start();
-                } else if (counter == 81) {
+                } else if (counter == 80) {
                     beepMediaPlayer.start();
-                } else if (counter == 79) {
+                } else if (counter == 78) {
                     imagen_motoraMediaPlayer.start();
                 } else if (counter == 70) {
                     beepMediaPlayer.start();
-                } else if (counter == 68) {
+                } else if (counter == 67) {
                     sustraccionMediaPlayer.start();
-                } else if (counter == 60) {
+                } else if (counter == 59) {
                     beep_finalMediaPlayer.start();
                 }
 

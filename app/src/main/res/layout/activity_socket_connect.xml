@@ -153,23 +153,24 @@
             android:id="@+id/ContinueLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingHorizontal="12dp"
             android:paddingVertical="12dp"
-            android:layout_alignParentBottom="true"
 
             >
+
             <Button
                 android:id="@+id/Continue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:drawableStart="@drawable/check_black"
                 android:layout_marginHorizontal="23dp"
                 android:background="@drawable/stilebutton"
+                android:drawableStart="@drawable/check_black"
                 android:gravity="center"
-                android:text="@string/continuar"/>
+                android:text="@string/continuar" />
         </LinearLayout>
 
 </RelativeLayout>
