@@ -152,7 +152,7 @@ public class Filter {
         // doble [] zNew = nuevo doble [z [0] .length];
 
 
-        for (int i = 0; i < 4; i++) {       // Careful!
+        for (int i = 0; i < 8; i++) {       // Careful!
             z[i] = transform(x[i], z[i]);
         }
 

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.100.101";
+    String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -462,26 +462,23 @@ public class MainActivity extends AppCompatActivity {
 
                 txtTimer_value.setText(minutos + ":" + segundosString);
                 counter--;
-                /*
-                150-60=90
-                90-9=81
-                81-2=79
-                79-9=70
-                70-2=68
-                68-8=60
 
-                */
+
                 System.out.println(counter);
                 if (counter == 89) {
+                    extractedArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
                     ejecucion_motoraMediaPlayer.start();
                 } else if (counter == 80) {
                     beepMediaPlayer.start();
                 } else if (counter == 78) {
+                    extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
                     imagen_motoraMediaPlayer.start();
                 } else if (counter == 70) {
                     beepMediaPlayer.start();
                 } else if (counter == 67) {
+                    extractedArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
                     sustraccionMediaPlayer.start();
+
                 } else if (counter == 59) {
                     beep_finalMediaPlayer.start();
                 }
@@ -510,7 +507,8 @@ public class MainActivity extends AppCompatActivity {
     public void saveRecord() {
 
         for (int i = 0; i < frameCounter; i++) {
-            eegFile.addLineToFile(extractedArrayString[i]);
+            if (extractedArrayString[i] != null)
+                eegFile.addLineToFile(extractedArrayString[i]);
         }
         eegFile.writeFileDataSet();
     }
@@ -577,7 +575,10 @@ public class MainActivity extends AppCompatActivity {
 
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
-                                extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 66 && counter > 59)) {
+                                    extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                }
+
                                 frameCounter++;
                                 if (frameCounter % 10 == 0) {
                                     updatePlot();
