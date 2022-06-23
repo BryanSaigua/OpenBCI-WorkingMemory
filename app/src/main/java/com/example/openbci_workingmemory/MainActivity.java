@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,13 +29,21 @@ import com.androidplot.xy.FastLineAndPointRenderer;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
 import com.example.openbci_workingmemory.components.CircularBuffer;
+import com.example.openbci_workingmemory.components.ConfigurationsFileManager;
+import com.example.openbci_workingmemory.components.DataBaseFileWriter;
 import com.example.openbci_workingmemory.components.DynamicSeries;
+import com.example.openbci_workingmemory.components.EEGFileReader;
 import com.example.openbci_workingmemory.components.EEGFileWriter;
 import com.example.openbci_workingmemory.components.Filter;
 import com.example.openbci_workingmemory.components.Filter_Noch;
+import com.example.openbci_workingmemory.components.Knn;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -48,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.100.101";
+    String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -59,7 +69,13 @@ public class MainActivity extends AppCompatActivity {
     public Filter_Noch activeFilterNoch;
     public double[][] filtState;
     public double[][] filtStateNoch;
+
     public int channelOfInterest = 0;
+    public static int detectionSensibility = 65;
+    public static int probabilitySensibility = 65;
+    public static int kNearestNeighbors = 15;
+    public static int maxSignalFrequency = 250000;
+    public static int minSignalFrequency = -250000;
 
     LinearLayout predictionContainer;
 
@@ -68,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
     public CircularBuffer eegBuffer = new CircularBuffer(220, 8);
 
     private static final String PLOT_TITLE = "Raw_EEG";
-    // amplitud de la señal ¨consultar¨
-    int maxSignalFrequency = 250000;
-    int minSignalFrequency = -250000;
 
     public DynamicSeries dataSeriesChannelOne;
     public XYPlot filterPlotChannelOne;
@@ -90,15 +103,22 @@ public class MainActivity extends AppCompatActivity {
     EEGFileWriter eegFile = new EEGFileWriter(this, "Captura de datos");
     private int frameCounter = 0;
 
-    private String[] extractedArrayString = new String[45000];
+    private String[] extractedArrayString = new String[4500000];
 
     MediaPlayer ejecucion_motoraMediaPlayer, imagen_motoraMediaPlayer, beepMediaPlayer, beep_finalMediaPlayer, sustraccionMediaPlayer;
 
+    double[][] originalSignalClassOne;
+    double[][] originalSignalClassTwo;
+    double[][] originalSignalClassThree;
+    private Knn knn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startDataBase();
+        readDataBase();
 
         setFilterType();
         setFilterTypeNoch();
@@ -468,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
                     extractedArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
                     ejecucion_motoraMediaPlayer.start();
                 } else if (counter == 80) {
+
                     beepMediaPlayer.start();
                 } else if (counter == 78) {
                     extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
@@ -491,7 +512,7 @@ public class MainActivity extends AppCompatActivity {
                     changeAppState("WAITINGEVALUATION");
                 if (appState.equals("TRAINING"))
                     changeAppState("WAITINGTRAINING");
-            }
+            }   
         }.start();
 
     }
@@ -512,6 +533,115 @@ public class MainActivity extends AppCompatActivity {
         eegFile.writeFileDataSet();
     }
 
+
+    void startDataBase() {
+
+        boolean databaseReady = false;
+        
+        String dbClassOne = "ClassOneDB";
+        String dbClassTwo = "ClassTwoDB";
+        String dbClassThree = "ClassThreeDB";
+
+        final File fileClassOneDB = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassOne + ".json");
+        final File fileClassTwoDB = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassTwo + ".json");
+        final File fileClassThreeDB = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassThree + ".json");
+
+        try {
+            new FileReader(fileClassOneDB);
+            new java.io.FileReader(fileClassTwoDB);
+            new java.io.FileReader(fileClassThreeDB);
+        } catch (FileNotFoundException e) {
+            databaseReady = true;
+        }
+
+        if (databaseReady) {
+            EEGFileWriter shorBlinkFile = new EEGFileWriter(this, "Captura de datos");
+            EEGFileWriter ClassTwoFile = new EEGFileWriter(this, "Captura de datos");
+            EEGFileWriter ClassThreeFile = new EEGFileWriter(this, "Captura de datos");
+
+            shorBlinkFile.initFile();
+            ClassTwoFile.initFile();
+            ClassThreeFile.initFile();
+
+            try {
+
+                InputStream inputStream = getResources().getAssets().open(dbClassOne + ".json");
+                DataBaseFileWriter fileReader = new DataBaseFileWriter(inputStream);
+                fileReader.writeClassOneDataBase(shorBlinkFile);
+            } catch (IOException e) {
+                Log.w("EEGGraph", "File not found error");
+            }
+
+            try {
+
+                InputStream inputStream = getResources().getAssets().open(dbClassTwo + ".json");
+                DataBaseFileWriter fileReader = new DataBaseFileWriter(inputStream);
+                fileReader.writeClassTwoDataBase(ClassTwoFile);
+            } catch (IOException e) {
+                Log.w("EEGGraph", "File not found error");
+            }
+
+            try {
+
+                InputStream inputStream = getResources().getAssets().open(dbClassThree + ".json");
+                DataBaseFileWriter fileReader = new DataBaseFileWriter(inputStream);
+                fileReader.writeClassThreeDataBase(ClassThreeFile);
+            } catch (IOException e) {
+                Log.w("EEGGraph", "File not found error");
+            }
+
+        }
+
+    }
+
+
+
+
+    void readDataBase() {
+
+        String dbClassOne = "ClassOneDB";
+        String dbClassTwo = "ClassTwoDB";
+        String dbClassThree = "ClassThreeDB";
+
+        try {
+            final File file = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassOne + ".json");
+            FileReader filePathReader = new java.io.FileReader(file);
+            InputStream inputStream = getResources().getAssets().open(dbClassOne + ".json");
+            EEGFileReader fileReader = new EEGFileReader(filePathReader);
+            //EEGFileReader fileReader = new EEGFileReader(inputStream);
+            originalSignalClassOne = fileReader.readToArray();
+            System.out.println("Lectura del primer archivo");
+
+        } catch (IOException e) {
+            Log.w("EEGGraph", "File not found error");
+        }
+
+        try {
+            final File file = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassTwo + ".json");
+            FileReader filePathReader = new java.io.FileReader(file);
+            InputStream inputStream = getResources().getAssets().open(dbClassTwo + ".json");
+            EEGFileReader fileReader = new EEGFileReader(filePathReader);
+            //EEGFileReader fileReader = new EEGFileReader(inputStream);
+
+            originalSignalClassTwo = fileReader.readToArray();
+            System.out.println("Lectura del segundo archivo");
+        } catch (IOException e) {
+            Log.w("EEGGraph", "File not found error");
+        }
+
+        try {
+            final File file = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), dbClassThree + ".json");
+            FileReader filePathReader = new java.io.FileReader(file);
+            InputStream inputStream = getResources().getAssets().open(dbClassThree + ".json");
+            EEGFileReader fileReader = new EEGFileReader(filePathReader);
+            //EEGFileReader fileReader = new EEGFileReader(inputStream);
+            originalSignalClassThree = fileReader.readToArray();
+            System.out.println("Lectura del tercer archivo");
+
+        } catch (IOException e) {
+            Log.w("EEGGraph", "File not found error");
+        }
+    }
 
     class SocketThread implements Runnable {
         public void run() {
@@ -574,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
-                                if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 66 && counter > 59)) {
+                                if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 67 && counter > 59)) {
                                     extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
                                 }
 

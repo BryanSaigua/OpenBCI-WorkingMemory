@@ -90,11 +90,11 @@ public class EEGFileWriter {
         }
     }
 
-    public void writeShortBlinkFile() {
+    public void writeClassOneFile() {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "ShortBlinkDB.json");
+            final File file = new File(dir, "ClassOneDB.json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -106,11 +106,11 @@ public class EEGFileWriter {
         }
     }
 
-    public void writeLongBlinkFile() {
+    public void writeClassTwoFile() {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "LongBlinkDB.json");
+            final File file = new File(dir, "ClassTwoDB.json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -122,11 +122,11 @@ public class EEGFileWriter {
         }
     }
 
-    public void writeNoneBlinkFile() {
+    public void writeClassThreeFile() {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "NoneBlinkDB.json");
+            final File file = new File(dir, "ClassThreeDB.json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -174,11 +174,11 @@ public class EEGFileWriter {
 
 
 
-    public void writeShortBlinkFileDataSet() {
+    public void writeClassOneFileDataSet() {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "ShortBlinkDataSet.json");
+            final File file = new File(dir, "ClassOneDataSet.json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -190,11 +190,11 @@ public class EEGFileWriter {
         }
     }
 
-    public void writeLongBlinkFileDataSet() {
+    public void writeClassTwoFileDataSet() {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "LongBlinkDataSet.json");
+            final File file = new File(dir, "ClassTwoDataSet.json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
