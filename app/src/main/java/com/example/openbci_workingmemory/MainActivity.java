@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.0.148";
+    String SERVER_IP = "192.168.100.101";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     private LineAndPointFormatter lineFormatterChannelOne;
 
     public double SCALE_FACTOR_EEG = 0.022351744455307063;
-    public double SCALE_FACTOR_EEG1 = (4500000) / 24 / (2 ^ 23 - 1);
 
     private Spinner channelsSpinner;
     private String appState = "WAITINGEVALUATION";
