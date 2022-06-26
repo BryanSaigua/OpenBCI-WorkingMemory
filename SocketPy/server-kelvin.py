@@ -61,7 +61,7 @@ class Server():
                                 msg = "[1800000,120000,100000,80000,60000,14000,12000,10000]".encode("UTF-8")
                                 c['client'].send((len(msg).to_bytes(2, byteorder='big')))
                                 c['client'].send((msg))
-                                time.sleep(0.05)
+                                time.sleep(0.004)
 
                     except: 
                         pass

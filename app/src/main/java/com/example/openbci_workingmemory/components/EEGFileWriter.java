@@ -54,8 +54,8 @@ public class EEGFileWriter {
     public void addDataToFile(double[] data) {
         numberOfLines = numberOfLines + 1;
         // Append timestamp
-        Long tsLong = System.currentTimeMillis();
-        builder.append(tsLong.toString() + ",");
+        /*Long tsLong = System.currentTimeMillis();
+        builder.append(tsLong.toString() + ",");*/
         for (int j = 0; j < data.length; j++) {
             builder.append("" + (data[j]));
             if (j < data.length - 1) {

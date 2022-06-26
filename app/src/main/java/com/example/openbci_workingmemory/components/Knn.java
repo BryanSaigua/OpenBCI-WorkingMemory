@@ -4,17 +4,17 @@ import java.util.List;
 
 public class Knn {
 
-    float[] originalSignalClassOne;
-    float[] originalSignalClassTwo;
-    float[] originalSignalClassThree;
+    double[] originalSignalClassOne;
+    double[] originalSignalClassTwo;
+    double[] originalSignalClassThree;
     int chanelOfInteres = 2;
-    int sampleLength = 510;
+    int sampleLength = 1760;
     double umbral = 0.7;
 
     private List data;
     private DTW dtw = new DTW();
 
-    public Knn(float[] originalSignalClassOne, float[] originalSignalClassTwo, float[] originalSignalClassThree, double umbral) {
+    public Knn(double[] originalSignalClassOne, double[] originalSignalClassTwo, double[] originalSignalClassThree, double umbral) {
 
         this.originalSignalClassOne = originalSignalClassOne;
         this.originalSignalClassTwo = originalSignalClassTwo;
@@ -27,24 +27,23 @@ public class Knn {
 
         double[][] distancesBlink = new double[150][150];
         float[] pSample = dataSeries.getPSample();
-        getSampleRange(originalSignalClassOne, 0);
 
         for (int i = 0; i < 20; i++) {
 
             distancesBlink[1][i] = dtw.compute(pSample, getSampleRange(originalSignalClassOne, i)).getDistance();
             distancesBlink[2][i] = 0;
 
-            distancesBlink[1][i + 15] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
-            distancesBlink[2][i + 15] = 1;
+            distancesBlink[1][i + 20] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
+            distancesBlink[2][i + 20] = 1;
 
-            distancesBlink[1][i + 30] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
-            distancesBlink[2][i + 30] = 2;
+            distancesBlink[1][i + 40] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
+            distancesBlink[2][i + 40] = 2;
         }
 
         double temp = 0;
 
-        for (int j = 0; j < 43; j++) {
-            for (int i = 0; i < 43; i++) {
+        for (int j = 0; j < 58; j++) {
+            for (int i = 0; i < 58; i++) {
                 if (distancesBlink[1][i] > distancesBlink[1][i + 1]) {
                     temp = distancesBlink[1][i];
                     distancesBlink[1][i] = distancesBlink[1][i + 1];
@@ -67,11 +66,11 @@ public class Knn {
         for (int i = 0; i < k; i++) {
 
             if (distancesBlink[2][i] == 0)
-                numberOfClassOnes = numberOfClassOnes + 1 * 0.1;
+                numberOfClassOnes = numberOfClassOnes + 100/k;
             if (distancesBlink[2][i] == 1)
-                numberOfClassTwos = numberOfClassTwos + 1 * 0.1;
+                numberOfClassTwos = numberOfClassTwos +  100/k ;
             if (distancesBlink[2][i] == 2)
-                numberOfClassThrees = numberOfClassThrees + 1 * 0.1;
+                numberOfClassThrees = numberOfClassThrees + 100/k ;
 
         }
 
@@ -82,7 +81,7 @@ public class Knn {
         System.out.println("Numero de vecinos: " + k);
 
 
-        return "";
+        return ""+numberOfClassOnes+" - "+numberOfClassTwos+" - "+numberOfClassThrees;
     }
 
     public float[] getPSample(double[][] doubleList, int chanelOfInteres) {
@@ -94,13 +93,14 @@ public class Knn {
         return pSample;
     }
 
-    public float[] getSampleRange(float[] signal, int sampleNumber) {
+    public float[] getSampleRange(double[] signal, int sampleNumber) {
         float[] sample = new float[sampleLength];
         int sampleStart = (sampleNumber * sampleLength) - sampleLength;
         if (sampleStart < 0)
             sampleStart = 0;
         for (int i = 0; i < sampleLength; i++) {
-            sample[i] = signal[i + sampleStart];
+            if (signal != null)
+                sample[i] = (float) signal[i + sampleStart];
         }
         return sample;
     }

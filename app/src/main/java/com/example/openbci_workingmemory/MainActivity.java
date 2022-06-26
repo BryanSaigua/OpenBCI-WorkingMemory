@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public Thread dataListener = null;
     public int counter = 150;
 
-    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal;
+    TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal, txtPrediction;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
     String SERVER_IP = "192.168.0.148";
@@ -80,12 +80,22 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout predictionContainer;
 
     private int notchFrequency = 14;
-    private static final int PLOT_LENGTH = 255 * 3;
-    public CircularBuffer eegBuffer = new CircularBuffer(220, 8);
+    private static final int PLOT_LENGTH = 1760;
+    public CircularBuffer eegBuffer = new CircularBuffer(1760, 8);
 
     private static final String PLOT_TITLE = "Raw_EEG";
 
+    public DynamicSeries dataSeriesGraph;
     public DynamicSeries dataSeriesChannelOne;
+    public DynamicSeries dataSeriesChannelTwo;
+    public DynamicSeries dataSeriesChannelThree;
+    public DynamicSeries dataSeriesChannelFour;
+    public DynamicSeries dataSeriesChannelFive;
+    public DynamicSeries dataSeriesChannelSix;
+    public DynamicSeries dataSeriesChannelSeven;
+    public DynamicSeries dataSeriesChannelEigth;
+
+
     public XYPlot filterPlotChannelOne;
     int average_channel_1 = 0;
 
@@ -110,7 +120,18 @@ public class MainActivity extends AppCompatActivity {
     double[][] originalSignalClassOne;
     double[][] originalSignalClassTwo;
     double[][] originalSignalClassThree;
-    private Knn knn;
+
+    private int current_umbral = 75;
+
+    private Knn knnChannelOne;
+    private Knn knnChannelTwo;
+    private Knn knnChannelThree;
+    private Knn knnChannelFour;
+    private Knn knnChannelFive;
+    private Knn knnChannelSix;
+    private Knn knnChannelSeven;
+    private Knn knnChannelEight;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +144,19 @@ public class MainActivity extends AppCompatActivity {
         setFilterType();
         setFilterTypeNoch();
         startListenerThread();
+        System.out.println("-------------" + originalSignalClassOne.length);
+        System.out.println("-------------" + originalSignalClassOne[0].length);
+        System.out.println("-------------" + originalSignalClassOne[1].length);
+
+        knnChannelOne = new Knn(originalSignalClassOne[0], originalSignalClassTwo[0], originalSignalClassThree[0], current_umbral);
+        knnChannelTwo = new Knn(originalSignalClassOne[1], originalSignalClassTwo[1], originalSignalClassThree[1], current_umbral);
+        knnChannelThree = new Knn(originalSignalClassOne[2], originalSignalClassTwo[2], originalSignalClassThree[2], current_umbral);
+        knnChannelFour = new Knn(originalSignalClassOne[3], originalSignalClassTwo[3], originalSignalClassThree[3], current_umbral);
+        knnChannelFive = new Knn(originalSignalClassOne[4], originalSignalClassTwo[4], originalSignalClassThree[4], current_umbral);
+        knnChannelSix = new Knn(originalSignalClassOne[5], originalSignalClassTwo[5], originalSignalClassThree[5], current_umbral);
+        knnChannelSeven = new Knn(originalSignalClassOne[6], originalSignalClassTwo[6], originalSignalClassThree[6], current_umbral);
+        knnChannelEight = new Knn(originalSignalClassOne[7], originalSignalClassTwo[7], originalSignalClassThree[7], current_umbral);
+
         initUI();
 
         eegFile.initFile();
@@ -130,7 +164,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void initUI() {
 
+        dataSeriesGraph = new DynamicSeries(PLOT_TITLE);
         dataSeriesChannelOne = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelTwo = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelThree = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelFour = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelFive = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelSix = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelSeven = new DynamicSeries(PLOT_TITLE);
+        dataSeriesChannelEigth = new DynamicSeries(PLOT_TITLE);
+
         filterPlotChannelOne = new XYPlot(this, PLOT_TITLE);
 
         initViewChannel1(this);
@@ -142,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         textViewPort = findViewById(R.id.portValue);
         textViewStatus = findViewById(R.id.stateValue);
         txtTimer_value = findViewById(R.id.timer_value);
+        txtPrediction = findViewById(R.id.prediction_value);
         canal = findViewById(R.id.textView3);
         textViewIP.setText(SERVER_IP);
         textViewPort.setText(SERVER_PORT);
@@ -252,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         filterPlotChannelOne = new XYPlot(context, PLOT_TITLE);
 
         // Create dataSeries that will be drawn on plot (Y will be obtained from dataSource, x will be implicitly generated):
-        dataSeriesChannelOne = new DynamicSeries(PLOT_TITLE);
+        dataSeriesGraph = new DynamicSeries(PLOT_TITLE);
 
         // Set X and Y domain
         filterPlotChannelOne.setRangeBoundaries(minSignalFrequency, maxSignalFrequency, BoundaryMode.FIXED);
@@ -265,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         lineFormatterChannelOne.getLinePaint().setStrokeWidth(3);
 
         // Add line to plot
-        filterPlotChannelOne.addSeries(dataSeriesChannelOne, lineFormatterChannelOne);
+        filterPlotChannelOne.addSeries(dataSeriesGraph, lineFormatterChannelOne);
 
         // Format plot layout
         //Remove margins, padding and border
@@ -469,6 +513,7 @@ public class MainActivity extends AppCompatActivity {
             int minutos;
             int segundos;
             String segundosString;
+            String prediction;
 
             public void onTick(long millisUntilFinished) {
                 minutos = counter / 60;
@@ -489,17 +534,49 @@ public class MainActivity extends AppCompatActivity {
                     ejecucion_motoraMediaPlayer.start();
                 } else if (counter == 80) {
 
+                    prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) /*+ "\n"
+                            + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
+                            + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
+                            + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
+                            + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFive) + "\n"
+                            + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSix) + "\n"
+                            + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
+                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth)*/;
+
+                    txtPrediction.setText(prediction);
+
                     beepMediaPlayer.start();
                 } else if (counter == 78) {
                     extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
                     imagen_motoraMediaPlayer.start();
                 } else if (counter == 70) {
+
+                    prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) ;
+                   /* knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
+                    knnChannelThree.evaluateBlink(dataSeriesChannelThree);
+                    knnChannelFour.evaluateBlink(dataSeriesChannelFour);
+                    knnChannelFive.evaluateBlink(dataSeriesChannelFive);
+                    knnChannelSix.evaluateBlink(dataSeriesChannelSix);
+                    knnChannelSeven.evaluateBlink(dataSeriesChannelSeven);
+                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);*/
+
                     beepMediaPlayer.start();
                 } else if (counter == 67) {
                     extractedArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
                     sustraccionMediaPlayer.start();
 
                 } else if (counter == 59) {
+
+                    prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) ;
+                    
+                  /*  knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
+                    knnChannelThree.evaluateBlink(dataSeriesChannelThree);
+                    knnChannelFour.evaluateBlink(dataSeriesChannelFour);
+                    knnChannelFive.evaluateBlink(dataSeriesChannelFive);
+                    knnChannelSix.evaluateBlink(dataSeriesChannelSix);
+                    knnChannelSeven.evaluateBlink(dataSeriesChannelSeven);
+                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);*/
+
                     beep_finalMediaPlayer.start();
                 }
 
@@ -512,7 +589,7 @@ public class MainActivity extends AppCompatActivity {
                     changeAppState("WAITINGEVALUATION");
                 if (appState.equals("TRAINING"))
                     changeAppState("WAITINGTRAINING");
-            }   
+            }
         }.start();
 
     }
@@ -537,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
     void startDataBase() {
 
         boolean databaseReady = false;
-        
+
         String dbClassOne = "ClassOneDB";
         String dbClassTwo = "ClassTwoDB";
         String dbClassThree = "ClassThreeDB";
@@ -595,8 +672,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     void readDataBase() {
 
         String dbClassOne = "ClassOneDB";
@@ -609,8 +684,23 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = getResources().getAssets().open(dbClassOne + ".json");
             EEGFileReader fileReader = new EEGFileReader(filePathReader);
             //EEGFileReader fileReader = new EEGFileReader(inputStream);
-            originalSignalClassOne = fileReader.readToArray();
-            System.out.println("Lectura del primer archivo");
+
+            double[][] readArray = new double[10][35200];
+
+            readArray[0] = fileReader.readToVector(0);
+            readArray[1] = fileReader.readToVector(1);
+            readArray[2] = fileReader.readToVector(2);
+            readArray[3] = fileReader.readToVector(3);
+            readArray[4] = fileReader.readToVector(4);
+            readArray[5] = fileReader.readToVector(5);
+            readArray[6] = fileReader.readToVector(6);
+            readArray[7] = fileReader.readToVector(7);
+
+            originalSignalClassOne = readArray;
+            System.out.println("Lectura del primer archivo" + originalSignalClassOne[0].length);
+            System.out.println("Lectura del primer archivo" + originalSignalClassOne[1].length);
+            System.out.println("Lectura del primer archivo" + originalSignalClassOne[2].length);
+            System.out.println("Lectura del primer archivo" + originalSignalClassOne[3].length);
 
         } catch (IOException e) {
             Log.w("EEGGraph", "File not found error");
@@ -623,7 +713,19 @@ public class MainActivity extends AppCompatActivity {
             EEGFileReader fileReader = new EEGFileReader(filePathReader);
             //EEGFileReader fileReader = new EEGFileReader(inputStream);
 
-            originalSignalClassTwo = fileReader.readToArray();
+            double[][] readArray = new double[10][35200];
+
+            readArray[0] = fileReader.readToVector(0);
+            readArray[1] = fileReader.readToVector(1);
+            readArray[2] = fileReader.readToVector(2);
+            readArray[3] = fileReader.readToVector(3);
+            readArray[4] = fileReader.readToVector(4);
+            readArray[5] = fileReader.readToVector(5);
+            readArray[6] = fileReader.readToVector(6);
+            readArray[7] = fileReader.readToVector(7);
+            originalSignalClassTwo = readArray;
+
+
             System.out.println("Lectura del segundo archivo");
         } catch (IOException e) {
             Log.w("EEGGraph", "File not found error");
@@ -635,7 +737,20 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = getResources().getAssets().open(dbClassThree + ".json");
             EEGFileReader fileReader = new EEGFileReader(filePathReader);
             //EEGFileReader fileReader = new EEGFileReader(inputStream);
-            originalSignalClassThree = fileReader.readToArray();
+
+
+            double[][] readArray = new double[10][35200];
+
+            readArray[0] = fileReader.readToVector(0);
+            readArray[1] = fileReader.readToVector(1);
+            readArray[2] = fileReader.readToVector(2);
+            readArray[3] = fileReader.readToVector(3);
+            readArray[4] = fileReader.readToVector(4);
+            readArray[5] = fileReader.readToVector(5);
+            readArray[6] = fileReader.readToVector(6);
+            readArray[7] = fileReader.readToVector(7);
+            originalSignalClassThree = readArray;
+
             System.out.println("Lectura del tercer archivo");
 
         } catch (IOException e) {
@@ -705,7 +820,9 @@ public class MainActivity extends AppCompatActivity {
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
                                 if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 67 && counter > 59)) {
+
                                     extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+
                                 }
 
                                 frameCounter++;
@@ -714,7 +831,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 if (frameCounter % 125 == 0) {
-                                    average_channel_1 = dataSeriesChannelOne.getAverage();
+                                    average_channel_1 = dataSeriesGraph.getAverage();
                                     txtAverage_channel_1.setText("Promedio: " + (average_channel_1) + " uV/count");
                                 }
                             } else {
@@ -763,17 +880,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void updatePlot() {
         int numEEGPoints = eegBuffer.getPts();
-        if (dataSeriesChannelOne.size() >= PLOT_LENGTH) {
+        if (dataSeriesGraph.size() >= PLOT_LENGTH) {
+
+            dataSeriesGraph.remove(numEEGPoints);
+
             dataSeriesChannelOne.remove(numEEGPoints);
+            dataSeriesChannelTwo.remove(numEEGPoints);
+            dataSeriesChannelThree.remove(numEEGPoints);
+            dataSeriesChannelFour.remove(numEEGPoints);
+            dataSeriesChannelFive.remove(numEEGPoints);
+            dataSeriesChannelSix.remove(numEEGPoints);
+            dataSeriesChannelSeven.remove(numEEGPoints);
+            dataSeriesChannelEigth.remove(numEEGPoints);
         }
-        dataSeriesChannelOne.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, channelOfInterest));
+        dataSeriesGraph.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, channelOfInterest));
+
+
+        dataSeriesChannelOne.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 0));
+        dataSeriesChannelTwo.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 1));
+        dataSeriesChannelThree.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 2));
+        dataSeriesChannelFour.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 3));
+        dataSeriesChannelFive.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 4));
+        dataSeriesChannelSix.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 5));
+        dataSeriesChannelSeven.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 6));
+        dataSeriesChannelEigth.addAll(eegBuffer.extractSingleChannelTransposedAsDouble(numEEGPoints, 7));
         eegBuffer.resetPts();
         filterPlotChannelOne.redraw();
     }
 
     public void clearPlot() {
-        int dataSeriesSize = dataSeriesChannelOne.getAll().size();
-        dataSeriesChannelOne.remove(dataSeriesSize);
+        int dataSeriesSize = dataSeriesGraph.getAll().size();
+        dataSeriesGraph.remove(dataSeriesSize);
         filterPlotChannelOne.redraw();
     }
 }

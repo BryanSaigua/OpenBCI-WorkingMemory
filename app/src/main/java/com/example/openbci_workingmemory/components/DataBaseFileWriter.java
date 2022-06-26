@@ -60,9 +60,9 @@ public class DataBaseFileWriter {
     public void writeClassOneDataBase(EEGFileWriter file) {
         readList = read();
         int len = readList.size();
-        double[] readArray ;
+        double[] readArray;
         for (int i = 0; i < len; i++) {
-            readArray = new double[]{readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4]};
+            readArray = new double[]{readList.get(i)[0], readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4], readList.get(i)[5], readList.get(i)[6], readList.get(i)[7]};
             file.addDataToFile(readArray);
         }
         file.writeClassOneFile();
@@ -71,9 +71,9 @@ public class DataBaseFileWriter {
     public void writeClassTwoDataBase(EEGFileWriter file) {
         readList = read();
         int len = readList.size();
-        double[] readArray ;
+        double[] readArray;
         for (int i = 0; i < len; i++) {
-            readArray = new double[]{readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4]};
+            readArray = new double[]{readList.get(i)[0], readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4], readList.get(i)[5], readList.get(i)[6], readList.get(i)[7]};
             file.addDataToFile(readArray);
         }
         file.writeClassTwoFile();
@@ -82,9 +82,9 @@ public class DataBaseFileWriter {
     public void writeClassThreeDataBase(EEGFileWriter file) {
         readList = read();
         int len = readList.size();
-        double[] readArray ;
+        double[] readArray;
         for (int i = 0; i < len; i++) {
-            readArray = new double[]{readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4]};
+            readArray = new double[]{readList.get(i)[0], readList.get(i)[1], readList.get(i)[2], readList.get(i)[3], readList.get(i)[4], readList.get(i)[5], readList.get(i)[6], readList.get(i)[7]};
             file.addDataToFile(readArray);
         }
         file.writeClassThreeFile();
