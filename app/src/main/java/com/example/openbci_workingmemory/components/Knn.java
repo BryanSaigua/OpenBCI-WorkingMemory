@@ -28,22 +28,22 @@ public class Knn {
         double[][] distancesBlink = new double[150][150];
         float[] pSample = dataSeries.getPSample();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
 
             distancesBlink[1][i] = dtw.compute(pSample, getSampleRange(originalSignalClassOne, i)).getDistance();
             distancesBlink[2][i] = 0;
 
-            distancesBlink[1][i + 20] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
-            distancesBlink[2][i + 20] = 1;
+            distancesBlink[1][i + 10] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
+            distancesBlink[2][i + 10] = 1;
 
-            distancesBlink[1][i + 40] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
-            distancesBlink[2][i + 40] = 2;
+            distancesBlink[1][i + 20] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
+            distancesBlink[2][i + 20] = 2;
         }
 
         double temp = 0;
 
-        for (int j = 0; j < 58; j++) {
-            for (int i = 0; i < 58; i++) {
+        for (int j = 0; j < 28; j++) {
+            for (int i = 0; i < 28; i++) {
                 if (distancesBlink[1][i] > distancesBlink[1][i + 1]) {
                     temp = distancesBlink[1][i];
                     distancesBlink[1][i] = distancesBlink[1][i + 1];
@@ -63,7 +63,7 @@ public class Knn {
         double numberOfClassTwos = 0;
         double numberOfClassThrees = 0;
 
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < 5; i++) {
 
             if (distancesBlink[2][i] == 0)
                 numberOfClassOnes = numberOfClassOnes + 100/k;

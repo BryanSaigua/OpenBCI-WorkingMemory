@@ -534,14 +534,14 @@ public class MainActivity extends AppCompatActivity {
                     ejecucion_motoraMediaPlayer.start();
                 } else if (counter == 80) {
 
-                    prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) /*+ "\n"
+                    prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) + "\n"
                             + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
                             + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
                             + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
                             + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFive) + "\n"
                             + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSix) + "\n"
                             + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
-                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth)*/;
+                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth);
 
                     txtPrediction.setText(prediction);
 
@@ -552,13 +552,13 @@ public class MainActivity extends AppCompatActivity {
                 } else if (counter == 70) {
 
                     prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) ;
-                   /* knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
+                    knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
                     knnChannelThree.evaluateBlink(dataSeriesChannelThree);
                     knnChannelFour.evaluateBlink(dataSeriesChannelFour);
                     knnChannelFive.evaluateBlink(dataSeriesChannelFive);
                     knnChannelSix.evaluateBlink(dataSeriesChannelSix);
                     knnChannelSeven.evaluateBlink(dataSeriesChannelSeven);
-                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);*/
+                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);
 
                     beepMediaPlayer.start();
                 } else if (counter == 67) {
@@ -568,14 +568,14 @@ public class MainActivity extends AppCompatActivity {
                 } else if (counter == 59) {
 
                     prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) ;
-                    
-                  /*  knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
+
+                    knnChannelTwo.evaluateBlink(dataSeriesChannelTwo);
                     knnChannelThree.evaluateBlink(dataSeriesChannelThree);
                     knnChannelFour.evaluateBlink(dataSeriesChannelFour);
                     knnChannelFive.evaluateBlink(dataSeriesChannelFive);
                     knnChannelSix.evaluateBlink(dataSeriesChannelSix);
                     knnChannelSeven.evaluateBlink(dataSeriesChannelSeven);
-                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);*/
+                    knnChannelEight.evaluateBlink(dataSeriesChannelEigth);
 
                     beep_finalMediaPlayer.start();
                 }
