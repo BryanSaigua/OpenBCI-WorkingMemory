@@ -3,7 +3,8 @@ import threading
 import sys
 import pickle
 from pyOpenBCI import OpenBCICyton ##
-
+import numpy as np
+import time
 from time import sleep
 
 class Server():
@@ -13,8 +14,8 @@ class Server():
         self.sock.bind((str(host), int(port)))
         self.sock.listen(10)
         self.sock.setblocking(False)
-
         self.clients = []
+        self.board = None
         accept = threading.Thread(target=self.aceptarCon)
 
         process = threading.Thread(target=self.processarCon)
@@ -27,7 +28,7 @@ class Server():
 
         while True:
             msg = input('')
-            if msg == 'salir':
+            if msg == 'salir':  
                 self.sock.close()   
                 sys.exit()
             else:
@@ -41,33 +42,42 @@ class Server():
                 conn.setblocking(False)
                 self.clients.append({
                     'client': conn,
-                    'data': {}
+                    'activated': False
                 })
                 print("Se conecto un cliente: ", addr)
             except:
                 pass
 
     def print_raw(self,sample):
-        msg = str(sample.channels_data) 
-        msgCodified = msg.encode("UTF-8")
-        #print(msgCodified)
-        if len(self.clients) > 0:
-            for c in self.clients:
-                try:
-                    #data = c['client'].recv(1024) 
-                    print(msgCodified)
+        for c in self.clients:
+            try:
+                if (c['activated']):
+                    msg =(sample.channels_data)
+                    msgCodified = str(msg).encode("UTF-8")
                     c['client'].send((len(msgCodified).to_bytes(2, byteorder='big')))
                     c['client'].send((msgCodified))
-                except: 
-                    pass
+                    print(type(msg))
+                    #time.sleep(0.004)
+
+            except Exception as e: 
+                # print(e)
+                pass
 
     def processarCon(self):
         print("ProcessarCon iniciado")
-        board = OpenBCICyton(daisy = False)
-        board.start_stream(self.print_raw)
-        #if (data.decode("UTF-8") == 'enviar'):
-            #board.start_stream(self.print_raw)
-            #self.activated = True
-        #if (data.decode("UTF-8") == 'salir'):
-        #    self.activated = False
+       # print(self.channels_data)
+        while True:
+            for c in self.clients:
+                try:
+                    data = c['client'].recv(1024) 
+                    if (data.decode("UTF-8") == 'enviar'):
+                        c['activated'] = True
+                        if not self.board:
+                            self.board = OpenBCICyton(daisy = False)
+                            self.board.start_stream(self.print_raw)
+                            raise OSError('Cannot find OpenBCI port.')
+                    if (data.decode("UTF-8") == 'salir'):
+                        c['activated'] = False
+                except: 
+                    pass
 Server()
