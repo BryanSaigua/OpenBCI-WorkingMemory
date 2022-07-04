@@ -57,7 +57,7 @@ public class Knn {
             }
         }
 
-        int k = 20;
+        int k = 5;
 
         double numberOfClassOnes = 0;
         double numberOfClassTwos = 0;
