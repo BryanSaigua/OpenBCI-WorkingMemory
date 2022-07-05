@@ -25,6 +25,7 @@ public class Knn {
 
     public String evaluateBlink(DynamicSeries dataSeries) {
 
+        System.out.println("Evaluando señales");
         double[][] distancesBlink = new double[150][150];
         float[] pSample = dataSeries.getPSample();
 

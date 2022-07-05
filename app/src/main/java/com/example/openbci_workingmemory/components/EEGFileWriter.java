@@ -143,7 +143,7 @@ public class EEGFileWriter {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "Configurations.json");
+            final File file = new File(dir, "Configurations"+fileNum+".json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -160,7 +160,7 @@ public class EEGFileWriter {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "DataSet.json");
+            final File file = new File(dir, "Dataset"+fileNum+".json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
