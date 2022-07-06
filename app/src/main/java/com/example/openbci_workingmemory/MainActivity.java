@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
     private Knn knnChannelSeven;
     private Knn knnChannelEight;
 
+    String prediction = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -515,8 +516,6 @@ public class MainActivity extends AppCompatActivity {
             int minutos;
             int segundos;
             String segundosString;
-            String prediction;
-
 
             public void onTick(long millisUntilFinished) {
                 minutos = counter / 60;
@@ -526,10 +525,8 @@ public class MainActivity extends AppCompatActivity {
                 else
                     segundosString = "" + segundos;
 
-
                 txtTimer_value.setText(minutos + ":" + segundosString);
                 counter--;
-
 
                 System.out.println(counter);
                 if (counter == 89) {
@@ -555,17 +552,10 @@ public class MainActivity extends AppCompatActivity {
                     sustraccionMediaPlayer.start();
 
                 } else if (counter == 59) {
-                    //knnThread.start();
-                    //prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne)
-                    /* + "\n"
-                            + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
-                            + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
-                            + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
-                            + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFive) + "\n"
-                            + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSix) + "\n"
-                            + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
-                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth)*/
-                    ;
+
+                    knnThread = new Thread(new KnnThread());
+                    knnThread.start();
+
                     beep_finalMediaPlayer.start();
                 }
 
@@ -575,6 +565,10 @@ public class MainActivity extends AppCompatActivity {
                 if (appState.equals("TRAINING")) {
                     saveRecord();
                 }
+                if (appState.equals("EVALUATING")) {
+                    txtPrediction.setText(prediction);
+                }
+
                 restartTimer();
                 if (appState.equals("EVALUATING"))
                     changeAppState("WAITINGEVALUATION");
@@ -788,9 +782,9 @@ public class MainActivity extends AppCompatActivity {
 
     class KnnThread implements Runnable {
         public void run() {
-            String prediction;
+            String threadPrediction;
 
-            prediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne)/* + "\n"
+            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne)/* + "\n"
                             + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
                             + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
                             + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
@@ -799,7 +793,7 @@ public class MainActivity extends AppCompatActivity {
                             + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
                             + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth)*/;
 
-            txtPrediction.setText(prediction);
+            prediction = prediction + "\n" + threadPrediction;
         }
     }
 
