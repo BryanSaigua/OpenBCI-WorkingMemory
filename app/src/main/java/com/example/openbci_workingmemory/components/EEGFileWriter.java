@@ -70,7 +70,7 @@ public class EEGFileWriter {
         builder.append("\n");
     }
 
-    public int  numberOfLines() {
+    public int numberOfLines() {
         return numberOfLines;
     }
 
@@ -89,6 +89,7 @@ public class EEGFileWriter {
         } catch (IOException e) {
         }
     }
+
 
     public void writeClassOneFile() {
         try {
@@ -143,7 +144,7 @@ public class EEGFileWriter {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "Configurations"+fileNum+".json");
+            final File file = new File(dir, "Configurations" + fileNum + ".json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -160,7 +161,7 @@ public class EEGFileWriter {
         try {
             final File dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
-            final File file = new File(dir, "Dataset"+fileNum+".json");
+            final File file = new File(dir, "Dataset" + fileNum + ".json");
             fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(builder.toString());
@@ -171,7 +172,6 @@ public class EEGFileWriter {
         } catch (IOException e) {
         }
     }
-
 
 
     public void writeClassOneFileDataSet() {
@@ -254,4 +254,8 @@ public class EEGFileWriter {
         }
     }
 
+    public void cleanFile() {
+        int builderLeng = builder.length();
+        builder.delete(0,builderLeng);
+    }
 }

@@ -113,9 +113,17 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer evaluationTimer;
 
     EEGFileWriter eegFile = new EEGFileWriter(this, "Captura de datos");
+
+    EEGFileWriter eegFiltertFile = new EEGFileWriter(this, "DataFiltrada");
+
+    EEGFileWriter eegOriginalFile = new EEGFileWriter(this, "DataOriginal");
+
+
     private int frameCounter = 0;
 
     private String[] extractedArrayString = new String[4500000];
+    private String[] extractedFilterArrayString = new String[4500000];
+    private String[] extractedOriginalArrayString = new String[4500000];
 
     MediaPlayer ejecucion_motoraMediaPlayer, imagen_motoraMediaPlayer, beepMediaPlayer, beep_finalMediaPlayer, sustraccionMediaPlayer;
 
@@ -163,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         initUI();
 
         eegFile.initFile();
+        eegFiltertFile.initFile();
+        eegOriginalFile.initFile();
     }
 
     public void initUI() {
@@ -534,17 +544,20 @@ public class MainActivity extends AppCompatActivity {
                     ejecucion_motoraMediaPlayer.start();
                 } else if (counter == 80) {
 
-                    knnThread = new Thread(new KnnThread());
-                    knnThread.start();
+                    if (appState.equals("EVALUATING")) {
+                        knnThread = new Thread(new KnnThread());
+                        knnThread.start();
+                    }
 
                     beepMediaPlayer.start();
                 } else if (counter == 78) {
                     extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
                     imagen_motoraMediaPlayer.start();
                 } else if (counter == 70) {
-
-                    knnThread = new Thread(new KnnThread());
-                    knnThread.start();
+                    if (appState.equals("EVALUATING")) {
+                        knnThread = new Thread(new KnnThread());
+                        knnThread.start();
+                    }
 
                     beepMediaPlayer.start();
                 } else if (counter == 67) {
@@ -552,10 +565,11 @@ public class MainActivity extends AppCompatActivity {
                     sustraccionMediaPlayer.start();
 
                 } else if (counter == 59) {
+                    if (appState.equals("EVALUATING")) {
 
-                    knnThread = new Thread(new KnnThread());
-                    knnThread.start();
-
+                        knnThread = new Thread(new KnnThread());
+                        knnThread.start();
+                    }
                     beep_finalMediaPlayer.start();
                 }
 
@@ -587,13 +601,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveRecord() {
+        System.out.println("frameCounter: "+frameCounter);
+        System.out.println("eegFiltertFile: "+extractedFilterArrayString.length);
+        System.out.println("eegOriginalFile: "+extractedOriginalArrayString.length);
+
 
         for (int i = 0; i < frameCounter; i++) {
+
             if (extractedArrayString[i] != null)
                 eegFile.addLineToFile(extractedArrayString[i]);
+
+            if (extractedFilterArrayString[i] != null)
+                eegFiltertFile.addLineToFile(extractedFilterArrayString[i]);
+
+            if (extractedOriginalArrayString[i] != null)
+                eegOriginalFile.addLineToFile(extractedOriginalArrayString[i]);
         }
-        frameCounter = 0;
+
         eegFile.writeFileDataSet();
+        eegFiltertFile.writeFile("DataFiltrada");
+        eegOriginalFile.writeFile("DataOriginal");
+
+        for (int i = 0; i < frameCounter; i++) {
+            extractedArrayString[i] = null;
+            extractedFilterArrayString[i] = null;
+            extractedOriginalArrayString[i] = null;
+        }
+
+        eegFile.cleanFile();
+        eegFiltertFile.cleanFile();
+        eegOriginalFile.cleanFile();
+
+        frameCounter = 0;
     }
 
 
@@ -812,7 +851,10 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             newData = getEegChannelValues(message[0]);
+                            extractedOriginalArrayString[frameCounter] = Arrays.toString(newData);
+
                             if (appState.equals("EVALUATING") || appState.equals("TRAINING")) {
                                 filtState = activeFilter.transform(newData, filtState);
                                 filtStateNoch = activeFilterNoch.transform(newData, filtStateNoch);
@@ -822,6 +864,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 eegBuffer.update(sumarVectores(vector1, vector2));
 
+                                extractedFilterArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+
+
                                 if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 67 && counter > 59) && appState.equals("TRAINING")) {
 
                                     extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
@@ -830,6 +875,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 frameCounter++;
                                 if (frameCounter % 10 == 0) {
+                                    System.out.println("frameCounter:----"+frameCounter);
                                     updatePlot();
                                 }
 
