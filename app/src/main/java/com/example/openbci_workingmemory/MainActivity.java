@@ -542,7 +542,7 @@ public class MainActivity extends AppCompatActivity {
                 if (counter == 89) {
                     extractedArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
                     extractedFilterArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
-                    eegOriginalFile[frameCounter] = "---------------Inicia ejecucion motora--------------------";
+                    extractedOriginalArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
 
                     ejecucion_motoraMediaPlayer.start();
                     
@@ -557,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (counter == 78) {
                     extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
                     extractedFilterArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
-                    eegOriginalFile[frameCounter] = "---------------Inicia imagen motora--------------------";
+                    extractedOriginalArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
 
                     imagen_motoraMediaPlayer.start();
 
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (counter == 67) {
                     extractedArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
                     extractedFilterArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
-                    eegOriginalFile[frameCounter] = "---------------Inicia sustracción--------------------";
+                    extractedOriginalArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
 
                     sustraccionMediaPlayer.start();
 
