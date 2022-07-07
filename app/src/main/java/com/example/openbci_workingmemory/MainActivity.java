@@ -541,7 +541,11 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(counter);
                 if (counter == 89) {
                     extractedArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
+                    extractedFilterArrayString[frameCounter] = "---------------Inicia ejecucion motora--------------------";
+                    eegOriginalFile[frameCounter] = "---------------Inicia ejecucion motora--------------------";
+
                     ejecucion_motoraMediaPlayer.start();
+                    
                 } else if (counter == 80) {
 
                     if (appState.equals("EVALUATING")) {
@@ -552,7 +556,11 @@ public class MainActivity extends AppCompatActivity {
                     beepMediaPlayer.start();
                 } else if (counter == 78) {
                     extractedArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
+                    extractedFilterArrayString[frameCounter] = "---------------Inicia imagen motora--------------------";
+                    eegOriginalFile[frameCounter] = "---------------Inicia imagen motora--------------------";
+
                     imagen_motoraMediaPlayer.start();
+
                 } else if (counter == 70) {
                     if (appState.equals("EVALUATING")) {
                         knnThread = new Thread(new KnnThread());
@@ -562,6 +570,9 @@ public class MainActivity extends AppCompatActivity {
                     beepMediaPlayer.start();
                 } else if (counter == 67) {
                     extractedArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
+                    extractedFilterArrayString[frameCounter] = "---------------Inicia sustracción--------------------";
+                    eegOriginalFile[frameCounter] = "---------------Inicia sustracción--------------------";
+
                     sustraccionMediaPlayer.start();
 
                 } else if (counter == 59) {
