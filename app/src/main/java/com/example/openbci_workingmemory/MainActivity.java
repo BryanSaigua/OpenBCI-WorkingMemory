@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal, txtPrediction;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.0.148";
+    String SERVER_IP = "192.168.2.2";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     public static int detectionSensibility = 65;
     public static int probabilitySensibility = 65;
     public static int kNearestNeighbors = 15;
-    public static int maxSignalFrequency = 2000000;
-    public static int minSignalFrequency = -2000000;
+    public static int maxSignalFrequency = 250000;
+    public static int minSignalFrequency = -50;
 
     LinearLayout predictionContainer;
 

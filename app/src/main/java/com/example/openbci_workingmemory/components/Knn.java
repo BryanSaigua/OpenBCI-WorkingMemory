@@ -42,7 +42,8 @@ public class Knn {
         }
 
         double temp = 0;
-
+//9 archivos = 18 muestras
+        // j < 18-2 i < 18-2
         for (int j = 0; j < 28; j++) {
             for (int i = 0; i < 28; i++) {
                 if (distancesBlink[1][i] > distancesBlink[1][i + 1]) {
