@@ -2,6 +2,7 @@ package com.example.openbci_workingmemory;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public static int detectionSensibility = 65;
     public static int probabilitySensibility = 65;
     public static int kNearestNeighbors = 15;
-    public static int maxSignalFrequency = 250000;
+    public static int maxSignalFrequency = 50;
     public static int minSignalFrequency = -50;
 
     LinearLayout predictionContainer;
@@ -369,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.addView(filterPlotChannelOne);
     }
 
+    @SuppressLint("SetTextI18n")
     public void setChanelOfInterest(String selectedChannel) {
         clearPlot();
         if (selectedChannel.equals("Canal 1")) {
@@ -612,10 +614,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveRecord() {
-        System.out.println("frameCounter: "+frameCounter);
-        System.out.println("eegFiltertFile: "+extractedFilterArrayString.length);
-        System.out.println("eegOriginalFile: "+extractedOriginalArrayString.length);
-
+//        System.out.println("frameCounter: "+frameCounter);
+//        System.out.println("eegFiltertFile: "+extractedFilterArrayString.length);
+//        System.out.println("eegOriginalFile: "+extractedOriginalArrayString.length);
+        System.out.println(average_channel_1);
 
         for (int i = 0; i < frameCounter; i++) {
 
@@ -834,7 +836,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             String threadPrediction;
 
-            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne)/* + "\n"
+            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) /*+ "\n"
                             + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
                             + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
                             + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
@@ -888,7 +890,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 frameCounter++;
-                                if (frameCounter % 10 == 0) {
+                                if (frameCounter % 15 == 0) {
                                     System.out.println("frameCounter:----"+frameCounter);
                                     updatePlot();
                                 }
@@ -896,6 +898,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (frameCounter % 125 == 0) {
                                     average_channel_1 = dataSeriesGraph.getAverage();
                                     txtAverage_channel_1.setText("Promedio: " + (average_channel_1) + " uV/count");
+
                                 }
                             } else {
                                 frameCounter = 0;
