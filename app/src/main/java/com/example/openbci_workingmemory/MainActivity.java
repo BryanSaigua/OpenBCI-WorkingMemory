@@ -874,7 +874,7 @@ public class MainActivity extends AppCompatActivity {
                                 double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
                                 //eegBuffer.update(sumarVectores(vector1, vector2));
-                                eegBuffer.update(sumarVectores(vector1));
+                                eegBuffer.update(vector1);
 
                                 //extractedFilterArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
                                 extractedFilterArrayString[frameCounter] = Arrays.toString(vector1);
