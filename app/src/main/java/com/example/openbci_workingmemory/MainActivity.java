@@ -873,14 +873,17 @@ public class MainActivity extends AppCompatActivity {
                                 double[] vector1 = activeFilter.extractFilteredSamples(filtState);
                                 double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
-                                eegBuffer.update(sumarVectores(vector1, vector2));
+                                //eegBuffer.update(sumarVectores(vector1, vector2));
+                                eegBuffer.update(sumarVectores(vector1));
 
-                                extractedFilterArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                //extractedFilterArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                extractedFilterArrayString[frameCounter] = Arrays.toString(vector1);
 
 
                                 if ((counter < 88 && counter > 80) || (counter < 78 && counter > 70) || (counter < 67 && counter > 59) && appState.equals("TRAINING")) {
 
-                                    extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                    //extractedArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
+                                    extractedArrayString[frameCounter] = Arrays.toString(vector1);
 
                                 }
 
