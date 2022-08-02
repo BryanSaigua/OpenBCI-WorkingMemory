@@ -30,7 +30,6 @@ import com.androidplot.xy.FastLineAndPointRenderer;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.XYPlot;
 import com.example.openbci_workingmemory.components.CircularBuffer;
-import com.example.openbci_workingmemory.components.ConfigurationsFileManager;
 import com.example.openbci_workingmemory.components.DataBaseFileWriter;
 import com.example.openbci_workingmemory.components.DynamicSeries;
 import com.example.openbci_workingmemory.components.EEGFileReader;
@@ -47,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal, txtPrediction;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.2.2";
+    String SERVER_IP = "192.168.100.162";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -617,7 +617,6 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println("frameCounter: "+frameCounter);
 //        System.out.println("eegFiltertFile: "+extractedFilterArrayString.length);
 //        System.out.println("eegOriginalFile: "+extractedOriginalArrayString.length);
-        System.out.println(average_channel_1);
 
         for (int i = 0; i < frameCounter; i++) {
 
@@ -836,16 +835,9 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             String threadPrediction;
 
-            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) /*+ "\n"
-                            + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
-                            + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
-                            + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
-                            + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFive) + "\n"
-                            + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSix) + "\n"
-                            + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
-                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth)*/;
-
-            prediction = prediction + "\n" + threadPrediction;
+            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne);
+            System.out.println("-.-.-.-.-.-.-.-.-.-" + threadPrediction);
+           // prediction = prediction + "\n" + threadPrediction;
         }
     }
 
@@ -875,7 +867,7 @@ public class MainActivity extends AppCompatActivity {
                                 double[] vector1 = activeFilter.extractFilteredSamples(filtState);
                                 double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
-                                //eegBuffer.update(sumarVectores(vector1, vector2));
+                                // eegBuffer.update(sumarVectores(vector1, vector2));
                                 eegBuffer.update(vector1);
 
                                 //extractedFilterArrayString[frameCounter] = Arrays.toString(sumarVectores(vector1, vector2));
@@ -891,13 +883,15 @@ public class MainActivity extends AppCompatActivity {
 
                                 frameCounter++;
                                 if (frameCounter % 15 == 0) {
-                                    System.out.println("frameCounter:----"+frameCounter);
+                                    // System.out.println("frameCounter:----"+frameCounter);
                                     updatePlot();
                                 }
 
                                 if (frameCounter % 125 == 0) {
                                     average_channel_1 = dataSeriesGraph.getAverage();
-                                    txtAverage_channel_1.setText("Promedio: " + (average_channel_1) + " uV/count");
+                                    DecimalFormat formato1 = new DecimalFormat("#.00");
+                                    //txtAverage_channel_1.setText("Promedio: " + formato1.format(newData[channelOfInterest]) + " uV/count");
+                                    txtAverage_channel_1.setText("- Promedio: " + formato1.format(channelOfInterest));
 
                                 }
                             } else {
@@ -915,14 +909,14 @@ public class MainActivity extends AppCompatActivity {
             p = p.substring(1, p.length() - 1);
             String[] values = p.split(",");
             if (values.length >= 7) {
-                newData[0] = Double.parseDouble(values[0]) * SCALE_FACTOR_EEG;
-                newData[1] = Double.parseDouble(values[1]) * SCALE_FACTOR_EEG;
-                newData[2] = Double.parseDouble(values[2]) * SCALE_FACTOR_EEG;
-                newData[3] = Double.parseDouble(values[3]) * SCALE_FACTOR_EEG;
-                newData[4] = Double.parseDouble(values[4]) * SCALE_FACTOR_EEG;
-                newData[5] = Double.parseDouble(values[5]) * SCALE_FACTOR_EEG;
-                newData[6] = Double.parseDouble(values[6]) * SCALE_FACTOR_EEG;
-                newData[7] = Double.parseDouble(values[7]) * SCALE_FACTOR_EEG;
+                newData[0] = Double.parseDouble(values[0])* SCALE_FACTOR_EEG;
+                newData[1] = Double.parseDouble(values[1])* SCALE_FACTOR_EEG;
+                newData[2] = Double.parseDouble(values[2])* SCALE_FACTOR_EEG;
+                newData[3] = Double.parseDouble(values[3])* SCALE_FACTOR_EEG;
+                newData[4] = Double.parseDouble(values[4])* SCALE_FACTOR_EEG;
+                newData[5] = Double.parseDouble(values[5])* SCALE_FACTOR_EEG;
+                newData[6] = Double.parseDouble(values[6])* SCALE_FACTOR_EEG;
+                newData[7] = Double.parseDouble(values[7])* SCALE_FACTOR_EEG;
             }
             return newData;
         }
@@ -934,6 +928,14 @@ public class MainActivity extends AppCompatActivity {
                 vectorSuma[i] = vector1[i] + vector2[i];
             }
             return vectorSuma;
+        }
+
+        private double mean(double[] vector1) {
+            double sum = 0;
+            for (int i = 0; i < vector1.length; i++) {
+                sum += (double)vector1[i]/ (double)vector1.length;
+            }
+            return sum;
         }
 
         public void updateFilter(int notchFrequency) {

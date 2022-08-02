@@ -237,10 +237,10 @@
                             android:id="@+id/textView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:textStyle="bold"
                             android:autoSizeMaxTextSize="18dp"
                             android:text="Canal: 1"
-                            android:textColor="@color/primary_black"
+                            android:textColor="@color/text"
                             android:textSize="15sp"
 
                             />
@@ -254,8 +254,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:autoSizeMaxTextSize="10dp"
-                            android:text="Promedio: 0 uV/count"
-                            android:textColor="@color/primary_black"
+                            android:text="- Promedio: 0"
+                            android:textColor="@color/text"
+
                             android:textSize="15sp" />
 
                     </LinearLayout>

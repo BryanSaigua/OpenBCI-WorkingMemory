@@ -28,24 +28,25 @@ public class Knn {
         System.out.println("Evaluando señales");
         double[][] distancesBlink = new double[150][150];
         float[] pSample = dataSeries.getPSample();
-
-        for (int i = 0; i < 10; i++) {
+        // int numero de muestras
+        int muestras = 14;
+        for (int i = 0; i < muestras; i++) {
 
             distancesBlink[1][i] = dtw.compute(pSample, getSampleRange(originalSignalClassOne, i)).getDistance();
             distancesBlink[2][i] = 0;
 
-            distancesBlink[1][i + 10] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
-            distancesBlink[2][i + 10] = 1;
+            distancesBlink[1][i + muestras] = dtw.compute(pSample, getSampleRange(originalSignalClassTwo, i)).getDistance();
+            distancesBlink[2][i + muestras] = 1;
 
-            distancesBlink[1][i + 20] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
-            distancesBlink[2][i + 20] = 2;
+            distancesBlink[1][i + muestras*2] = dtw.compute(pSample, getSampleRange(originalSignalClassThree, i)).getDistance();
+            distancesBlink[2][i + muestras*2] = 2;
         }
 
         double temp = 0;
 //9 archivos = 18 muestras
         // j < 18-2 i < 18-2
-        for (int j = 0; j < 28; j++) {
-            for (int i = 0; i < 28; i++) {
+        for (int j = 0; j < (muestras*3)-2; j++) {
+            for (int i = 0; i < (muestras*3)-2; i++) {
                 if (distancesBlink[1][i] > distancesBlink[1][i + 1]) {
                     temp = distancesBlink[1][i];
                     distancesBlink[1][i] = distancesBlink[1][i + 1];
@@ -59,7 +60,7 @@ public class Knn {
             }
         }
 
-        int k = 5;
+        int k = 4;
 
         double numberOfClassOnes = 0;
         double numberOfClassTwos = 0;

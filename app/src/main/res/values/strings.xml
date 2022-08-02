@@ -20,21 +20,31 @@
     <string name="Wifi">Análisis de señales</string>
     <string name="Config">Configuracion Usuario</string>
 
-    <string name="PS1">1.- Antes de empezar la toma de datos, verifique que la diadema (Muse Headband) este bien colocada.</string>
-    <string name="PS2">2.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
-    <string name="PS3">3.- La diadema debe estar colocada a la mitad de su frente. No muy abajo ni muy arriba.</string>
-    <string name="PS4">4.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres</string>
-    <string name="PS5">5.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
+    <string name="I1">1.- Verificar que el equipo móvil esté conectado a la red que se va a manejar.</string>
+    <string name="I2">2.- El participante, podrá visualizar su actividad cerebral y predicción en tiempo real, siempre y cuando realice de manera correcta el protocolo experimental, logrando de esta manera tener una lista de canales para su visualización.</string>
+    <string name="I3">3.- El participante puede escoger, entre entrenar o realizar el test de manera directa para el estudio de su actividad cerebral.</string>
+    <string name="I4">4.- El coordinador que guié la actividad debe tener un control absoluto de la App y el control del volumen para una correpta interpretacion de los estimulos</string>
+    <string name="I5">5.- A nadie le van a importar tus fracasos, ni a ti deberían importarte. Lo único que importa en los negocios es acertar una sola vez y entonces todos te dirán cuan afortunado eres.</string>
 
+    <string name="R1">Para lograr una optima adquisición de la señal, se recomienda algunas actividades que el coordinar puede realizar con cada participante antes de comenzar con la adquisición de señales.</string>
+    <string name="R2">1.- Limpiar el cuero cabelludo especialmente en la parte donde los electrodos aran contacto con la piel de los individuos.</string>
+    <string name="R3">2.- Colocar de manera correcta el casco sin causar estrés o dolencias al usuario donde el participante se sentirá a gusto con el prototipo OpenBci. </string>
+    <string name="R4">3.- Si utiliza electrodos húmedos verificar que tengan suficiente pasta conductora diseñada para ser utilizada con electrodos de copa de oro para estudios de electroencefalografía (EEG), electromiografía (EMG).</string>
+    <string name="R5">4.- Para lograr un funcionamiento preciso del estudio, se brindará al participante la debida retroalimentación, donde se tendrá un tiempo razonable para cualquier inquietud.</string>
+    <string name="R6">5.- Se recomienda que por día se realice un TRAIN el cual consta de 3 RUN cada uno con el tiempo 2:30 minutos.</string>
+    <string name="R7">6.- Se recomienda que el participante para poder realizar la actividad, pueda estar en un estado completamente relajado.</string>
+    <string name="R8">7.- La eficiencia del estudio se realizará mediante el protocolo experimental, por es importante que las sesiones no tengan interrupciones mediante su proceso y por ende al participante se le brindara minutos de descanso esto con el objetivo de que el participante se sienta a gusto al realizar la actividad</string>
+    <string name="R9">8.- Verificar que el equipo “OpenBci” este prendido y con optimas baterías.</string>
+    <string name="R10">9.- Verificar la conexión de todos los dispositivos a utilizar.</string>
     <string-array name="channels">
-        <item>Canal 1</item>
-        <item>Canal 2</item>
-        <item>Canal 3</item>
-        <item>Canal 4</item>
-        <item>Canal 5</item>
-        <item>Canal 6</item>
-        <item>Canal 7</item>
-        <item>Canal 8</item>
+        <item>Fpz</item>
+        <item>Fz</item>
+        <item>Cz</item>
+        <item>Pz</item>
+        <item>C3</item>
+        <item>C4</item>
+        <item>P3</item>
+        <item>P4</item>
     </string-array>
     <string name="spn_title">Chosse a channel</string>
 

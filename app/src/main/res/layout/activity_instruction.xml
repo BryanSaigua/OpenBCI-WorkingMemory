@@ -74,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginVertical="12dp"
-                        android:text="@string/PS1"
+                        android:text="@string/I1"
                         android:textColor="@color/text" />
 
                     <TextView
@@ -82,66 +82,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="12dp"
-                        android:text="@string/PS2"
+                        android:text="@string/I2"
                         android:textColor="@color/text" />
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:contentDescription="@string/recomenda"
-                        app:srcCompat="@drawable/ic_app" />
-
                     <TextView
                         android:id="@+id/textView5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="12dp"
-                        android:text="@string/PS3"
+                        android:text="@string/I3"
                         android:textColor="@color/text" />
-
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:srcCompat="@drawable/ic_app" />
 
                     <TextView
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="12dp"
-                        android:text="@string/PS4"
+                        android:text="@string/I4"
                         android:textColor="@color/text" />
 
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:srcCompat="@drawable/ic_app"
-                        tools:ignore="ImageContrastCheck" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="12dp"
-                        android:text="@string/PS5"
-                        android:textColor="@color/text" />
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:srcCompat="@drawable/ic_app" />
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="12dp"
-                        android:text="@string/PS5"
-                        android:textColor="@color/text"/>
 
                 </LinearLayout>
             </ScrollView>
