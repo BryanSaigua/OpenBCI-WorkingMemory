@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewIP, textViewPort, textViewStatus, txtAverage_channel_1, txtTimer_value, canal, txtPrediction;
     Button btnStart, btnStop, btnTraining, btnOutTraining;
 
-    String SERVER_IP = "192.168.100.162";
+    String SERVER_IP = "192.168.0.148";
     String SERVER_PORT = "5000";
 
     public PrintWriter output;
@@ -98,6 +98,33 @@ public class MainActivity extends AppCompatActivity {
     public DynamicSeries dataSeriesChannelSeven;
     public DynamicSeries dataSeriesChannelEigth;
 
+
+    public DynamicSeries dataSeriesChannelOneClassOne;
+    public DynamicSeries dataSeriesChannelTwoClassOne;
+    public DynamicSeries dataSeriesChannelThreeClassOne;
+    public DynamicSeries dataSeriesChannelFourClassOne;
+    public DynamicSeries dataSeriesChannelFiveClassOne;
+    public DynamicSeries dataSeriesChannelSixClassOne;
+    public DynamicSeries dataSeriesChannelSevenClassOne;
+    public DynamicSeries dataSeriesChannelEigthClassOne;
+
+    public DynamicSeries dataSeriesChannelOneClassTwo;
+    public DynamicSeries dataSeriesChannelTwoClassTwo;
+    public DynamicSeries dataSeriesChannelThreeClassTwo;
+    public DynamicSeries dataSeriesChannelFourClassTwo;
+    public DynamicSeries dataSeriesChannelFiveClassTwo;
+    public DynamicSeries dataSeriesChannelSixClassTwo;
+    public DynamicSeries dataSeriesChannelSevenClassTwo;
+    public DynamicSeries dataSeriesChannelEigthClassTwo;
+
+    public DynamicSeries dataSeriesChannelOneClassThree;
+    public DynamicSeries dataSeriesChannelTwoClassThree;
+    public DynamicSeries dataSeriesChannelThreeClassThree;
+    public DynamicSeries dataSeriesChannelFourClassThree;
+    public DynamicSeries dataSeriesChannelFiveClassThree;
+    public DynamicSeries dataSeriesChannelSixClassThree;
+    public DynamicSeries dataSeriesChannelSevenClassThree;
+    public DynamicSeries dataSeriesChannelEigthClassThree;
 
     public XYPlot filterPlotChannelOne;
     int average_channel_1 = 0;
@@ -553,6 +580,14 @@ public class MainActivity extends AppCompatActivity {
                     if (appState.equals("EVALUATING")) {
                         knnThread = new Thread(new KnnThread());
                         knnThread.start();
+                        /*dataSeriesChannelOneClassOne = dataSeriesChannelOne;
+                        dataSeriesChannelTwoClassOne = dataSeriesChannelTwo;
+                        dataSeriesChannelThreeClassOne = dataSeriesChannelThree;
+                        dataSeriesChannelFourClassOne = dataSeriesChannelFour;
+                        dataSeriesChannelFiveClassOne = dataSeriesChannelFive;
+                        dataSeriesChannelSixClassOne = dataSeriesChannelSix;
+                        dataSeriesChannelSevenClassOne = dataSeriesChannelSeven;
+                        dataSeriesChannelEigthClassOne = dataSeriesChannelEigth;*/
                     }
 
                     beepMediaPlayer.start();
@@ -567,6 +602,17 @@ public class MainActivity extends AppCompatActivity {
                     if (appState.equals("EVALUATING")) {
                         knnThread = new Thread(new KnnThread());
                         knnThread.start();
+
+                        //dataSeriesChannelOneClassTwo= dataSeriesChannelOne;;
+                        //dataSeriesChannelTwoClassTwo= dataSeriesChannelTwo;;
+                        //dataSeriesChannelThreeClassTwo= dataSeriesChannelThree;;
+                        //dataSeriesChannelFourClassTwo= dataSeriesChannelFour;;
+                        //dataSeriesChannelFiveClassTwo= dataSeriesChannelFive;;
+                        //dataSeriesChannelSixClassTwo= dataSeriesChannelSix;;
+                        //dataSeriesChannelSevenClassTwo= dataSeriesChannelSeven;;
+                        //dataSeriesChannelEigthClassTwo= dataSeriesChannelEigth;;
+
+
                     }
 
                     beepMediaPlayer.start();
@@ -579,6 +625,18 @@ public class MainActivity extends AppCompatActivity {
 
                 } else if (counter == 59) {
                     if (appState.equals("EVALUATING")) {
+
+                        //knnThread = new Thread(new KnnThread());
+                        //knnThread.start();
+
+                        //dataSeriesChannelOneClassThree= dataSeriesChannelOne;;
+                        //dataSeriesChannelTwoClassThree= dataSeriesChannelTwo;;
+                        //dataSeriesChannelThreeClassThree= dataSeriesChannelThree;;
+                        //dataSeriesChannelFourClassThree= dataSeriesChannelFour;;
+                        //dataSeriesChannelFiveClassThree= dataSeriesChannelFive;;
+                        //dataSeriesChannelSixClassThree= dataSeriesChannelSix;;
+                        //dataSeriesChannelSevenClassThree= dataSeriesChannelSeven;;
+                        //dataSeriesChannelEigthClassThree= dataSeriesChannelEigth;;
 
                         knnThread = new Thread(new KnnThread());
                         knnThread.start();
@@ -835,9 +893,51 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             String threadPrediction;
 
-            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne);
+            threadPrediction = "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOne) + "\n"
+                            + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwo) + "\n"
+                            + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThree) + "\n"
+                            + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFour) + "\n"
+                            + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFive) + "\n"
+                            + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSix) + "\n"
+                            + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSeven) + "\n"
+                            + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigth);
             System.out.println("-.-.-.-.-.-.-.-.-.-" + threadPrediction);
-           // prediction = prediction + "\n" + threadPrediction;
+           prediction = prediction + "\n" + threadPrediction;
+        }
+    }
+
+    class KnnThreadLater implements Runnable {
+        public void run() {
+
+            prediction = prediction + "Muestra 1\n";
+            prediction = prediction + "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOneClassOne) + "\n"
+                    + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwoClassOne) + "\n"
+                    + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThreeClassOne) + "\n"
+                    + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFourClassOne) + "\n"
+                    + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFiveClassOne) + "\n"
+                    + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSixClassOne) + "\n"
+                    + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSevenClassOne) + "\n"
+                    + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigthClassOne);
+
+            prediction = prediction + "Muestra 2\n";
+            prediction = prediction + "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOneClassTwo) + "\n"
+                    + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwoClassTwo) + "\n"
+                    + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThreeClassTwo) + "\n"
+                    + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFourClassTwo) + "\n"
+                    + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFiveClassTwo) + "\n"
+                    + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSixClassTwo) + "\n"
+                    + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSevenClassTwo) + "\n"
+                    + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigthClassTwo);
+
+            prediction = prediction + "Muestra 3\n";
+            prediction = prediction + "Canal 1: " + knnChannelOne.evaluateBlink(dataSeriesChannelOneClassThree) + "\n"
+                    + "Canal 2: " + knnChannelTwo.evaluateBlink(dataSeriesChannelTwoClassThree) + "\n"
+                    + "Canal 3: " + knnChannelThree.evaluateBlink(dataSeriesChannelThreeClassThree) + "\n"
+                    + "Canal 4: " + knnChannelFour.evaluateBlink(dataSeriesChannelFourClassThree) + "\n"
+                    + "Canal 5: " + knnChannelFive.evaluateBlink(dataSeriesChannelFiveClassThree) + "\n"
+                    + "Canal 6: " + knnChannelSix.evaluateBlink(dataSeriesChannelSixClassThree) + "\n"
+                    + "Canal 7: " + knnChannelSeven.evaluateBlink(dataSeriesChannelSevenClassThree) + "\n"
+                    + "Canal 8: " + knnChannelEight.evaluateBlink(dataSeriesChannelEigthClassThree);
         }
     }
 
@@ -865,7 +965,7 @@ public class MainActivity extends AppCompatActivity {
                                 filtStateNoch = activeFilterNoch.transform(newData, filtStateNoch);
 
                                 double[] vector1 = activeFilter.extractFilteredSamples(filtState);
-                                double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
+                                //double[] vector2 = activeFilterNoch.extractFilteredSamples(filtStateNoch);
 
                                 // eegBuffer.update(sumarVectores(vector1, vector2));
                                 eegBuffer.update(vector1);

@@ -28,8 +28,10 @@ public class Knn {
         System.out.println("Evaluando señales");
         double[][] distancesBlink = new double[150][150];
         float[] pSample = dataSeries.getPSample();
-        // int numero de muestras
-        int muestras = 14;
+
+        //numero de muestras
+        int muestras = 10;
+
         for (int i = 0; i < muestras; i++) {
 
             distancesBlink[1][i] = dtw.compute(pSample, getSampleRange(originalSignalClassOne, i)).getDistance();
@@ -43,8 +45,7 @@ public class Knn {
         }
 
         double temp = 0;
-//9 archivos = 18 muestras
-        // j < 18-2 i < 18-2
+
         for (int j = 0; j < (muestras*3)-2; j++) {
             for (int i = 0; i < (muestras*3)-2; i++) {
                 if (distancesBlink[1][i] > distancesBlink[1][i + 1]) {
@@ -66,7 +67,7 @@ public class Knn {
         double numberOfClassTwos = 0;
         double numberOfClassThrees = 0;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < k; i++) {
 
             if (distancesBlink[2][i] == 0)
                 numberOfClassOnes = numberOfClassOnes + 100/k;
